@@ -1,0 +1,65 @@
+version: '3.7'
+
+services:
+#  webapi:
+#    container_name: webapi
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    volumes:
+#      - .:/usr/src/app
+#      - /usr/src/app/node_modules
+#    ports:
+#      - ${SERVER_PORT}:${SERVER_PORT}
+#    env_file:
+#      - .env
+#    networks:
+#      - webnet
+#    restart: always
+#    depends_on:
+#      - postgresdb
+#    command: npm run start:dev
+
+#  test-web-api:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    volumes:
+#      - .:/usr/src/app
+#      - /usr/src/app/node_modules
+#    networks:
+#      - webnet
+#    restart: always
+#    command: [ "npm", "run", "test:watch" ]
+
+  postgresdb:
+    container_name: postgresdb
+    image: postgres:13
+    networks:
+      - webnet
+#    env_file:
+#      - .env
+    restart: always
+    environment:
+      POSTGRES_USER: student
+      POSTGRES_PASSWORD: student
+      POSTGRES_DB: testdb
+      PG_DATA: /var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  adminer:
+    image: adminer:latest
+    restart: always
+    depends_on:
+      - postgresdb
+    networks:
+      - webnet
+    ports:
+      - 8081:8080
+networks:
+  webnet:
+volumes:
+  pgdata:

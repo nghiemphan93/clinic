@@ -1,4 +1,4 @@
-package com.springbootjwtpostgres.backend.models;
+package com.springbootjwtpostgres.backend.user;
 
 public enum ERole {
 	ROLE_USER,

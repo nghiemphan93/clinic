@@ -1,13 +1,8 @@
-package com.springbootjwtpostgres.backend.controllers;
+package com.springbootjwtpostgres.backend.user;
 
-import com.springbootjwtpostgres.backend.models.ERole;
-import com.springbootjwtpostgres.backend.models.Role;
-import com.springbootjwtpostgres.backend.models.User;
 import com.springbootjwtpostgres.backend.payload.request.LoginRequest;
 import com.springbootjwtpostgres.backend.payload.request.SignupRequest;
 import com.springbootjwtpostgres.backend.payload.response.JwtResponse;
-import com.springbootjwtpostgres.backend.repository.RoleRepository;
-import com.springbootjwtpostgres.backend.repository.UserRepository;
 import com.springbootjwtpostgres.backend.security.jwt.JwtUtils;
 import com.springbootjwtpostgres.backend.security.services.UserDetailsImpl;
 import org.springframework.http.ResponseEntity;

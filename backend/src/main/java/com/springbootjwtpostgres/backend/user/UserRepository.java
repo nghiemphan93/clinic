@@ -1,6 +1,5 @@
-package com.springbootjwtpostgres.backend.repository;
+package com.springbootjwtpostgres.backend.user;
 
-import com.springbootjwtpostgres.backend.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

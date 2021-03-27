@@ -1,4 +1,4 @@
-package com.springbootjwtpostgres.backend.controllers;
+package com.springbootjwtpostgres.backend.user;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;

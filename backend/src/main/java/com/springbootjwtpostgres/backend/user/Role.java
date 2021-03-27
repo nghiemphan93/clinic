@@ -1,4 +1,4 @@
-package com.springbootjwtpostgres.backend.models;
+package com.springbootjwtpostgres.backend.user;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

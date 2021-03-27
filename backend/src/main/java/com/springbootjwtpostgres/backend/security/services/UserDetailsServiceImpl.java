@@ -1,7 +1,7 @@
 package com.springbootjwtpostgres.backend.security.services;
 
-import com.springbootjwtpostgres.backend.models.User;
-import com.springbootjwtpostgres.backend.repository.UserRepository;
+import com.springbootjwtpostgres.backend.user.User;
+import com.springbootjwtpostgres.backend.user.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

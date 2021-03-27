@@ -1,26 +1,16 @@
 package com.springbootjwtpostgres.backend.exceptionhandlers;
 
 import com.springbootjwtpostgres.backend.payload.response.ExceptionResponse;
-import com.springbootjwtpostgres.backend.security.jwt.AuthEntryPointJwt;
 import org.omg.CORBA.portable.ApplicationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.crossstore.ChangeSetPersister;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.NoHandlerFoundException;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
-import static org.springframework.data.crossstore.ChangeSetPersister.*;
-import static org.springframework.web.client.HttpClientErrorException.*;
-import static org.springframework.web.client.HttpClientErrorException.Unauthorized;
 
 @ControllerAdvice
 public class ExceptionHelper extends ResponseEntityExceptionHandler {

@@ -5,7 +5,6 @@ import com.springbootjwtpostgres.backend.models.Role;
 import com.springbootjwtpostgres.backend.models.User;
 import com.springbootjwtpostgres.backend.payload.request.LoginRequest;
 import com.springbootjwtpostgres.backend.payload.request.SignupRequest;
-import com.springbootjwtpostgres.backend.payload.response.ExceptionResponse;
 import com.springbootjwtpostgres.backend.payload.response.JwtResponse;
 import com.springbootjwtpostgres.backend.repository.RoleRepository;
 import com.springbootjwtpostgres.backend.repository.UserRepository;
@@ -18,15 +17,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 
 import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static org.springframework.web.client.HttpClientErrorException.*;
 
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -72,17 +68,12 @@ public class AuthController {
     public ResponseEntity<?> registerUser(@RequestBody SignupRequest signUpRequest) throws Exception {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             throw new Exception("Error: Username is already taken!");
-//            return ResponseEntity
-//                    .badRequest()
-//                    .body(new ExceptionResponse("Error: Username is already taken!"));
         }
 
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             throw new Exception("Error: Email is already taken!");
-//            throw new UnauthorizedExe("Error: Email is already in use!");
         }
 
-        // Create new user's account
         User user = new User(signUpRequest.getUsername(),
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()));

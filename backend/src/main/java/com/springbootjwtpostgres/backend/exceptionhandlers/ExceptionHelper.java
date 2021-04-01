@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -22,21 +23,28 @@ public class ExceptionHelper extends ResponseEntityExceptionHandler {
 //        return new ResponseEntity<Object>(ex.getMessage(), HttpStatus.BAD_REQUEST);
 //    }
 
-    private ResponseEntity<ExceptionResponse> buildResponseEntity(HttpStatus status, String message, String debugMessage) {
+    public ResponseEntity<ExceptionResponse> buildResponseEntity(HttpStatus status, String message, String debugMessage) {
         return new ResponseEntity<>(new ExceptionResponse(status, message, debugMessage), status);
     }
 
     @ExceptionHandler({AccessDeniedException.class})
     public ResponseEntity<ExceptionResponse> handleAccessDeniedException(
             AccessDeniedException ex, WebRequest request) {
-        System.out.println("not permited....");
+        System.out.println("not permitted....");
         return buildResponseEntity(HttpStatus.FORBIDDEN, ex.getMessage(), ex.getLocalizedMessage());
+    }
+
+    @ExceptionHandler({AuthenticationException.class})
+    public ResponseEntity<ExceptionResponse> handleUnauthorizedException(
+            AuthenticationException ex, WebRequest request) {
+        System.out.println("unauthorized....");
+        return buildResponseEntity(HttpStatus.UNAUTHORIZED, ex.getMessage(), ex.getLocalizedMessage());
     }
 
     @ExceptionHandler({ApplicationException.class})
     public ResponseEntity<ExceptionResponse> handleNotFoundException(
             ApplicationException ex) {
-        System.out.println("not founding....");
+        System.out.println("not found....");
         return buildResponseEntity(HttpStatus.NOT_FOUND, ex.getMessage(), ex.getLocalizedMessage());
     }
 

@@ -1,7 +1,7 @@
 package com.springbootjwtpostgres.backend.user;
 
 public enum ERole {
-	ROLE_USER,
-    ROLE_MODERATOR,
-    ROLE_ADMIN
+    ROLE_NURSE,
+    ROLE_DOCTOR,
+    ROLE_MANAGER
 }

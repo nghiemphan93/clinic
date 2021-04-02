@@ -22,11 +22,11 @@ public class DataLoader implements ApplicationRunner {
         List<Role> roles = this.roleRepository.findAll();
         if (roles.isEmpty()) {
             Role admin = new Role();
-            admin.setRole(ERole.ROLE_ADMIN);
+            admin.setRole(ERole.ROLE_MANAGER);
             Role mod = new Role();
-            mod.setRole(ERole.ROLE_MODERATOR);
+            mod.setRole(ERole.ROLE_DOCTOR);
             Role user = new Role();
-            user.setRole(ERole.ROLE_USER);
+            user.setRole(ERole.ROLE_NURSE);
             roles.add(admin);
             roles.add(mod);
             roles.add(user);

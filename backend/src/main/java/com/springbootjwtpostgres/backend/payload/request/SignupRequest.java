@@ -1,10 +1,12 @@
 package com.springbootjwtpostgres.backend.payload.request;
 
+import com.springbootjwtpostgres.backend.user.ERole;
 import lombok.Data;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Set;
-
-import javax.validation.constraints.*;
 
 @Data
 public class SignupRequest {
@@ -17,7 +19,7 @@ public class SignupRequest {
     @Email
     private String email;
 
-    private Set<String> role;
+    private Set<ERole> role;
 
     @NotBlank
     @Size(min = 6, max = 40)

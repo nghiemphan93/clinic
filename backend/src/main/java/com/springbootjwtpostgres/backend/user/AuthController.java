@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -49,7 +50,7 @@ public class AuthController {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
+                .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(new JwtResponse(jwt,
@@ -60,7 +61,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody SignupRequest signUpRequest) throws Exception {
+    public ResponseEntity<?> registerUser(@RequestBody @Valid SignupRequest signUpRequest) throws Exception {
         if (userRepo.existsByUsername(signUpRequest.getUsername())) {
             throw new Exception("Error: Username is already taken!");
         }
@@ -73,32 +74,31 @@ public class AuthController {
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()));
 
-        Set<String> strRoles = signUpRequest.getRole();
+        Set<ERole> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
 
         if (strRoles == null) {
-            Role userRole = roleRepository.findByRole(ERole.ROLE_USER)
+            Role userRole = roleRepository.findByRole(ERole.ROLE_NURSE)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
                 switch (role) {
-                    case "admin":
-                        Role adminRole = roleRepository.findByRole(ERole.ROLE_ADMIN)
+                    case ROLE_MANAGER:
+                        Role adminRole = roleRepository.findByRole(ERole.ROLE_MANAGER)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(adminRole);
-
                         break;
-                    case "mod":
-                        Role modRole = roleRepository.findByRole(ERole.ROLE_MODERATOR)
+                    case ROLE_DOCTOR:
+                        Role modRole = roleRepository.findByRole(ERole.ROLE_DOCTOR)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(modRole);
-
                         break;
-                    default:
-                        Role userRole = roleRepository.findByRole(ERole.ROLE_USER)
+                    case ROLE_NURSE:
+                        Role userRole = roleRepository.findByRole(ERole.ROLE_NURSE)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(userRole);
+                        break;
                 }
             });
         }

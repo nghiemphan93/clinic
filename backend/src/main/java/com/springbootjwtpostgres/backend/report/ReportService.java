@@ -1,5 +1,6 @@
 package com.springbootjwtpostgres.backend.report;
 
+import com.springbootjwtpostgres.backend.basemodels.BaseEntity;
 import com.springbootjwtpostgres.backend.basemodels.BasePage;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
@@ -9,35 +10,35 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class ReportService {
-    private final ReportRepo reportRepo;
-    private final ReportCriteriaRepo reportCriteriaRepo;
+    private final ReportRepo repo;
+    private final ReportCriteriaRepo criteriaRepo;
 
-    public Page<Report> getAll(BasePage page, ReportSearchCriteria reportSearchCriteria) {
-        return this.reportCriteriaRepo.findAllWithFilters(page, reportSearchCriteria);
+    public Page<Report> getAll(BasePage page, ReportSearchCriteria searchCriteria) {
+        return this.criteriaRepo.findAllWithFilters(page, searchCriteria);
     }
 
-    public Report getOne(Long id) throws NotFoundException {
-        return this.reportRepo.findById(id)
+    public BaseEntity getOne(Long id) throws NotFoundException {
+        return this.repo.findById(id)
                 .orElseThrow(() -> new NotFoundException(Report.class.getSimpleName() + " not found"));
     }
 
-    public Report create(Report report) {
-        return this.reportRepo.save(report);
+    public BaseEntity create(Report newEntity) {
+        return this.repo.save(newEntity);
     }
 
-    public Report update(Long id, Report updatedEntity) throws NotFoundException {
-        Report oldReport = this.reportRepo.findById(id)
+    public BaseEntity update(Long id, Report updatedEntity) throws NotFoundException {
+        Report oldEntity = this.repo.findById(id)
                 .orElseThrow(() -> new NotFoundException(Report.class.getSimpleName() + " not found"));
-        oldReport.setReportPeriod(updatedEntity.getReportPeriod());
-        oldReport.setBeforeQuantity(updatedEntity.getBeforeQuantity());
-        oldReport.setAfterQuantity(updatedEntity.getAfterQuantity());
-        oldReport.setTotalPriceIn(updatedEntity.getTotalPriceIn());
-        oldReport.setTotalPriceOut(updatedEntity.getTotalPriceOut());
-        return this.reportRepo.save(oldReport);
+        oldEntity.setReportPeriod(updatedEntity.getReportPeriod());
+        oldEntity.setBeforeQuantity(updatedEntity.getBeforeQuantity());
+        oldEntity.setAfterQuantity(updatedEntity.getAfterQuantity());
+        oldEntity.setTotalPriceIn(updatedEntity.getTotalPriceIn());
+        oldEntity.setTotalPriceOut(updatedEntity.getTotalPriceOut());
+        return this.repo.save(oldEntity);
     }
 
     public void delete(Long id) {
-        this.reportRepo.deleteById(id);
+        this.repo.deleteById(id);
     }
 
 }

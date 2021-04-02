@@ -1,5 +1,6 @@
 package com.springbootjwtpostgres.backend.report;
 
+import com.springbootjwtpostgres.backend.basemodels.BaseEntity;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -11,45 +12,45 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/reports")
 @AllArgsConstructor
 public class ReportController {
-    private final ReportService reportService;
+    private final ReportService service;
 
     @GetMapping
-    public ResponseEntity<Page<Report>> getAll(ReportPage reportPage,
-                                                   ReportSearchCriteria reportSearchCriteria) {
+    public ResponseEntity<Page<Report>> getAll(ReportPage page,
+                                               ReportSearchCriteria searchCriteria) {
         return new ResponseEntity<>(
-                this.reportService.getAll(reportPage, reportSearchCriteria),
+                this.service.getAll(page, searchCriteria),
                 HttpStatus.OK
         );
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Report> getOne(@PathVariable Long id) throws NotFoundException {
+    public ResponseEntity<BaseEntity> getOne(@PathVariable Long id) throws NotFoundException {
         return new ResponseEntity<>(
-                this.reportService.getOne(id),
+                this.service.getOne(id),
                 HttpStatus.OK
         );
     }
 
     @PostMapping
-    public ResponseEntity<Report> create(@RequestBody Report report) {
+    public ResponseEntity<BaseEntity> create(@RequestBody Report newEntity) {
         return new ResponseEntity<>(
-                this.reportService.create(report),
+                this.service.create(newEntity),
                 HttpStatus.OK
         );
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Report> update(@PathVariable Long id,
-                                               @RequestBody Report newEntity)
+    public ResponseEntity<BaseEntity> update(@PathVariable Long id,
+                                             @RequestBody Report updatedEntity)
             throws NotFoundException {
         return new ResponseEntity<>(
-                this.reportService.update(id, newEntity),
+                this.service.update(id, updatedEntity),
                 HttpStatus.OK
         );
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        this.reportService.delete(id);
+        this.service.delete(id);
     }
 }

@@ -41,25 +41,25 @@ public class ReportCriteriaRepo {
         return new PageImpl<>(typedQuery.getResultList(), pageable, count);
     }
 
-    private Predicate getPredicate(ReportSearchCriteria reportSearchCriteria,
+    private Predicate getPredicate(ReportSearchCriteria searchCriteria,
                                    Root<Report> reportRoot) {
         List<Predicate> predicates = new ArrayList<>();
-        if (Objects.nonNull(reportSearchCriteria.getReportPeriod())) {
+        if (Objects.nonNull(searchCriteria.getReportPeriod())) {
             predicates.add(
                     this.criteriaBuilder.equal(
                             reportRoot.get(Report_.REPORT_PERIOD),
-                            reportSearchCriteria.getReportPeriod())
+                            searchCriteria.getReportPeriod())
             );
         }
         if (
-                Objects.nonNull(reportSearchCriteria.getCreatedAtFrom())
-                        && Objects.nonNull(reportSearchCriteria.getCreatedAtTo())
+                Objects.nonNull(searchCriteria.getCreatedAtFrom())
+                        && Objects.nonNull(searchCriteria.getCreatedAtTo())
         ) {
             predicates.add(
                     this.criteriaBuilder.between(
                             reportRoot.get(Report_.CREATED_AT),
-                            reportSearchCriteria.getCreatedAtFrom(),
-                            reportSearchCriteria.getCreatedAtTo()
+                            searchCriteria.getCreatedAtFrom(),
+                            searchCriteria.getCreatedAtTo()
                     )
             );
         }

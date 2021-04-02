@@ -1,7 +1,7 @@
 package com.springbootjwtpostgres.backend.exceptionhandlers;
 
 import com.springbootjwtpostgres.backend.payload.response.ExceptionResponse;
-import org.omg.CORBA.portable.ApplicationException;
+import javassist.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -43,9 +43,9 @@ public class ExceptionHelper extends ResponseEntityExceptionHandler {
         return buildResponseEntity(HttpStatus.UNAUTHORIZED, ex.getMessage(), ex.getLocalizedMessage());
     }
 
-    @ExceptionHandler({ApplicationException.class})
+    @ExceptionHandler({NotFoundException.class})
     public ResponseEntity<ExceptionResponse> handleNotFoundException(
-            ApplicationException ex) {
+            NotFoundException ex) {
         logger.error(ex.getMessage());
         return buildResponseEntity(HttpStatus.NOT_FOUND, ex.getMessage(), ex.getLocalizedMessage());
     }

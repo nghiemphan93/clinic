@@ -1,12 +1,8 @@
 package com.springbootjwtpostgres.backend.user;
 
-import lombok.Data;
-import org.springframework.data.domain.Sort;
+import com.springbootjwtpostgres.backend.basemodels.BasePage;
 
-@Data
-public class UserPage {
-    private int pageNumber = 0;
-    private int pageSize = 10;
-    private Sort.Direction sortDirection = Sort.Direction.ASC;
+
+public class UserPage extends BasePage {
     private String sortBy = User_.USERNAME;
 }

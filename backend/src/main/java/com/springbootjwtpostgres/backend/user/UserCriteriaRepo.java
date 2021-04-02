@@ -46,14 +46,14 @@ public class UserCriteriaRepo {
         if (Objects.nonNull(userSearchCriteria.getUsername())) {
             predicates.add(
                     this.criteriaBuilder.like(
-                            userRoot.get("username"),
+                            userRoot.get(User_.USERNAME),
                             "%" + userSearchCriteria.getUsername() + "%"
                     ));
         }
         if (Objects.nonNull(userSearchCriteria.getEmail())) {
             predicates.add(
                     this.criteriaBuilder.like(
-                            userRoot.get("email"),
+                            userRoot.get(User_.EMAIL),
                             "%" + userSearchCriteria.getEmail() + "%"
                     ));
         }

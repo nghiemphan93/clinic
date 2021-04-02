@@ -5,11 +5,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-    private final UserRepository userRepository;
+    private final UserRepo userRepo;
     private final UserCriteriaRepo userCriteriaRepo;
 
-    public UserService(UserRepository userRepository, UserCriteriaRepo userCriteriaRepo) {
-        this.userRepository = userRepository;
+    public UserService(UserRepo userRepo, UserCriteriaRepo userCriteriaRepo) {
+        this.userRepo = userRepo;
         this.userCriteriaRepo = userCriteriaRepo;
     }
 
@@ -19,6 +19,6 @@ public class UserService {
     }
 
     public User createUser(User user) {
-        return this.userRepository.save(user);
+        return this.userRepo.save(user);
     }
 }

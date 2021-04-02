@@ -1,7 +1,7 @@
 package com.springbootjwtpostgres.backend.security.services;
 
 import com.springbootjwtpostgres.backend.user.User;
-import com.springbootjwtpostgres.backend.user.UserRepository;
+import com.springbootjwtpostgres.backend.user.UserRepo;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,16 +10,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-	UserRepository userRepository;
+	UserRepo userRepo;
 
-	public UserDetailsServiceImpl(UserRepository userRepository) {
-		this.userRepository = userRepository;
+	public UserDetailsServiceImpl(UserRepo userRepo) {
+		this.userRepo = userRepo;
 	}
 
 	@Override
 	@Transactional
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = userRepository.findByUsername(username)
+		User user = userRepo.findByUsername(username)
 				.orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
 
 		return UserDetailsImpl.build(user);

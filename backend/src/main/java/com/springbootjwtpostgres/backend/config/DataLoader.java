@@ -3,7 +3,6 @@ package com.springbootjwtpostgres.backend.config;
 import com.springbootjwtpostgres.backend.user.ERole;
 import com.springbootjwtpostgres.backend.user.Role;
 import com.springbootjwtpostgres.backend.user.RoleRepository;
-import com.springbootjwtpostgres.backend.user.UserRepository;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;

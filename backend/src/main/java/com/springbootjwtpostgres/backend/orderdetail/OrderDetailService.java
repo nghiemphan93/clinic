@@ -16,7 +16,10 @@ public class OrderDetailService {
     private final OrderDetailCriteriaRepo criteriaRepo;
     private final OrderService orderService;
 
-    public Page<OrderDetail> getAll(Long orderId, BasePage page, OrderDetailSearchCriteria searchCriteria) throws NotFoundException {
+    public Page<OrderDetail> getAll(Long orderId,
+                                    BasePage page,
+                                    OrderDetailSearchCriteria searchCriteria)
+            throws NotFoundException {
         Order order = (Order) this.orderService.getOne(orderId);
         searchCriteria.setOrder(order);
         return this.criteriaRepo.findAllWithFilters(page, searchCriteria);

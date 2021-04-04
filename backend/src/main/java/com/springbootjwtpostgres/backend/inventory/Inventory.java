@@ -6,20 +6,15 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 
 @Entity
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 public class Inventory extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     private Long currentQuantity;
-    private Date createdAt;
 
     @OneToOne
     private Product product;

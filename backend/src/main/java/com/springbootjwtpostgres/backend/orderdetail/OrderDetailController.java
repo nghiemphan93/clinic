@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/orders/{orderId}")
+@RequestMapping("/api/orders/{orderId}/orderDetails")
 @AllArgsConstructor
 public class OrderDetailController {
     private final OrderDetailService service;

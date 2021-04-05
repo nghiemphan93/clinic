@@ -1,13 +1,49 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/welcome' },
-  { path: 'welcome', loadChildren: () => import('./pages/welcome/welcome.module').then(m => m.WelcomeModule) }
+  {
+    path: 'welcome',
+    loadChildren: () =>
+      import('./pages/welcome/welcome.module').then((m) => m.WelcomeModule),
+  },
+  {
+    path: 'auth',
+    loadChildren: () =>
+      import('./pages/auth/auth.module').then((m) => m.AuthModule),
+  },
+  {
+    path: 'users',
+    loadChildren: () =>
+      import('./pages/user/user.module').then((m) => m.UserModule),
+  },
+  {
+    path: 'reports',
+    loadChildren: () =>
+      import('./pages/report/report.module').then((m) => m.ReportModule),
+  },
+  {
+    path: 'products',
+    loadChildren: () =>
+      import('./pages/product/product.module').then((m) => m.ProductModule),
+  },
+  {
+    path: 'orders',
+    loadChildren: () =>
+      import('./pages/order/order.module').then((m) => m.OrderModule),
+  },
+  {
+    path: '**',
+    loadChildren: () =>
+      import('./pages/not-found/not-found.module').then(
+        (m) => m.NotFoundModule
+      ),
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

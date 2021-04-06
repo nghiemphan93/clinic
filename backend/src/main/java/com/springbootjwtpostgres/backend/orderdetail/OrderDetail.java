@@ -7,8 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 
 @Entity
@@ -19,9 +18,15 @@ public class OrderDetail extends BaseEntity {
     private int quantity;
     private double totalPricePerProduct;
 
-    @ManyToOne
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "product_id")
     private Product product;
+    @Column(name = "product_id", insertable = false, updatable = false)
+    private Long productId;
 
-    @ManyToOne
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "order_id")
     private Order order;
+    @Column(name = "order_id", insertable = false, updatable = false)
+    private Long orderId;
 }

@@ -9,51 +9,50 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/orders/{orderId}/orderDetails")
+@RequestMapping("/api/orderDetails")
 @AllArgsConstructor
 public class OrderDetailController {
     private final OrderDetailService service;
 
     @GetMapping
-    public ResponseEntity<Page<OrderDetail>> getAll(@PathVariable Long orderId,
-                                                    OrderDetailPage page,
-                                                    OrderDetailSearchCriteria searchCriteria) throws NotFoundException {
+    public ResponseEntity<Page<OrderDetail>> getAll(
+            OrderDetailPage page,
+            OrderDetailSearchCriteria searchCriteria) throws NotFoundException {
         return new ResponseEntity<>(
-                this.service.getAll(orderId, page, searchCriteria),
+                this.service.getAll(page, searchCriteria),
                 HttpStatus.OK
         );
     }
 
     @GetMapping("/{orderDetailId}")
-    public ResponseEntity<BaseEntity> getOne(@PathVariable Long orderId,
-                                             @PathVariable Long orderDetailId) throws NotFoundException {
+    public ResponseEntity<BaseEntity> getOne(
+            @PathVariable Long orderDetailId) throws NotFoundException {
         return new ResponseEntity<>(
-                this.service.getOne(orderId, orderDetailId),
+                this.service.getOne(orderDetailId),
                 HttpStatus.OK
         );
     }
 
     @PostMapping
-    public ResponseEntity<BaseEntity> create(@PathVariable Long orderId, @RequestBody OrderDetail newEntity) {
+    public ResponseEntity<BaseEntity> create(@RequestBody OrderDetail newEntity) {
         return new ResponseEntity<>(
-                this.service.create(orderId, newEntity),
+                this.service.create(newEntity),
                 HttpStatus.OK
         );
     }
 
     @PutMapping("/{orderDetailId}")
-    public ResponseEntity<BaseEntity> update(@PathVariable Long orderId,
-                                             @PathVariable Long orderDetailId,
+    public ResponseEntity<BaseEntity> update(@PathVariable Long orderDetailId,
                                              @RequestBody OrderDetail updatedEntity)
             throws NotFoundException {
         return new ResponseEntity<>(
-                this.service.update(orderId, orderDetailId, updatedEntity),
+                this.service.update(orderDetailId, updatedEntity),
                 HttpStatus.OK
         );
     }
 
     @DeleteMapping("/{orderDetailId}")
-    public void delete(@PathVariable Long orderId, @PathVariable Long orderDetailId) {
-        this.service.delete(orderId, orderDetailId);
+    public void delete(@PathVariable Long orderDetailId) {
+        this.service.delete(orderDetailId);
     }
 }

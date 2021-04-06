@@ -28,7 +28,6 @@ public class OrderDetailCriteriaRepo {
                                                 OrderDetailSearchCriteria searchCriteria) {
         CriteriaQuery<OrderDetail> criteriaQuery = this.criteriaBuilder.createQuery(OrderDetail.class);
         Root<OrderDetail> root = criteriaQuery.from(OrderDetail.class);
-//        root.join(OrderDetail_.ORDER);
         Predicate predicate = this.getPredicate(searchCriteria, root);
         criteriaQuery.where(predicate);
         setOrder(page, criteriaQuery, root);
@@ -45,11 +44,19 @@ public class OrderDetailCriteriaRepo {
     private Predicate getPredicate(OrderDetailSearchCriteria searchCriteria,
                                    Root<OrderDetail> reportRoot) {
         List<Predicate> predicates = new ArrayList<>();
-        if (Objects.nonNull(searchCriteria.getOrder())) {
+        if (Objects.nonNull(searchCriteria.getOrderId())) {
             predicates.add(
                     this.criteriaBuilder.equal(
-                            reportRoot.get(OrderDetail_.ORDER),
-                            searchCriteria.getOrder()
+                            reportRoot.get(OrderDetail_.ORDER_ID),
+                            searchCriteria.getOrderId()
+                    )
+            );
+        }
+        if (Objects.nonNull(searchCriteria.getProductId())) {
+            predicates.add(
+                    this.criteriaBuilder.equal(
+                            reportRoot.get(OrderDetail_.PRODUCT_ID),
+                            searchCriteria.getProductId()
                     )
             );
         }

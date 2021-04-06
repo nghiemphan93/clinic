@@ -13,5 +13,6 @@ public class OrderDetailSearchCriteria {
     private double totalPricePerProductTo;
     private Date createdAtFrom;
     private Date createdAtTo;
-    private Order order;
+    private Long orderId;
+    private Long productId;
 }

@@ -9,52 +9,50 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/orders/{orderId}/bills")
+@RequestMapping("/api/bills")
 @AllArgsConstructor
 public class BillController {
     private final BillService service;
 
     @GetMapping
-    public ResponseEntity<Page<Bill>> getAll(@PathVariable Long orderId,
-                                             BillPage page,
-                                             BillSearchCriteria searchCriteria) throws NotFoundException {
+    public ResponseEntity<Page<Bill>> getAll(
+            BillPage page,
+            BillSearchCriteria searchCriteria) throws NotFoundException {
         return new ResponseEntity<>(
-                this.service.getAll(orderId, page, searchCriteria),
+                this.service.getAll(page, searchCriteria),
                 HttpStatus.OK
         );
     }
 
     @GetMapping("/{billId}")
-    public ResponseEntity<BaseEntity> getOne(@PathVariable Long orderId,
-                                             @PathVariable Long billId) throws NotFoundException {
+    public ResponseEntity<BaseEntity> getOne(
+            @PathVariable Long billId) throws NotFoundException {
         return new ResponseEntity<>(
-                this.service.getOne(orderId, billId),
+                this.service.getOne(billId),
                 HttpStatus.OK
         );
     }
 
     @PostMapping
-    public ResponseEntity<BaseEntity> create(@PathVariable Long orderId,
-                                             @RequestBody Bill newEntity) {
+    public ResponseEntity<BaseEntity> create(@RequestBody Bill newEntity) {
         return new ResponseEntity<>(
-                this.service.create(orderId, newEntity),
+                this.service.create(newEntity),
                 HttpStatus.OK
         );
     }
 
     @PutMapping("/{billId}")
-    public ResponseEntity<BaseEntity> update(@PathVariable Long orderId,
-                                             @PathVariable Long billId,
+    public ResponseEntity<BaseEntity> update(@PathVariable Long billId,
                                              @RequestBody Bill updatedEntity)
             throws NotFoundException {
         return new ResponseEntity<>(
-                this.service.update(orderId, billId, updatedEntity),
+                this.service.update(billId, updatedEntity),
                 HttpStatus.OK
         );
     }
 
     @DeleteMapping("/{billId}")
-    public void delete(@PathVariable Long orderId, @PathVariable Long billId) {
-        this.service.delete(orderId, billId);
+    public void delete(@PathVariable Long billId) {
+        this.service.delete(billId);
     }
 }

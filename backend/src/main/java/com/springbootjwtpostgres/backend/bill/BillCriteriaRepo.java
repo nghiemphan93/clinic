@@ -44,11 +44,11 @@ public class BillCriteriaRepo {
     private Predicate getPredicate(BillSearchCriteria searchCriteria,
                                    Root<Bill> reportRoot) {
         List<Predicate> predicates = new ArrayList<>();
-        if (Objects.nonNull(searchCriteria.getOrder())) {
+        if (Objects.nonNull(searchCriteria.getOrderId())) {
             predicates.add(
                     this.criteriaBuilder.equal(
-                            reportRoot.get(Bill_.ORDER),
-                            searchCriteria.getOrder()
+                            reportRoot.get(Bill_.ORDER_ID),
+                            searchCriteria.getOrderId()
                     )
             );
         }

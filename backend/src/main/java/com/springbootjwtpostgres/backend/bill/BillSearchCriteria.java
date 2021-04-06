@@ -15,5 +15,5 @@ public class BillSearchCriteria {
     private double billTotalPriceTo;
     private Date createdAtFrom;
     private Date createdAtTo;
-    private Order order;
+    private Long orderId;
 }

@@ -8,8 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 
 @Entity
@@ -21,6 +20,10 @@ public class Bill extends BaseEntity {
     private OrderStatus billStatus;
     private double billTotalPrice;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "order_id")
     private Order order;
+
+    @Column(name = "order_id", insertable = false, updatable = false)
+    private Long orderId;
 }

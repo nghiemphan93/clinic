@@ -84,6 +84,13 @@
             <version>6.0.0.Alpha7</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <version>5.8.0-M1</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>

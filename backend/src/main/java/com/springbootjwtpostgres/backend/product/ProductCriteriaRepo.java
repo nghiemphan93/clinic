@@ -47,21 +47,21 @@ public class ProductCriteriaRepo {
             predicates.add(
                     this.criteriaBuilder.like(
                             reportRoot.get(Product_.PRODUCT_NAME),
-                            searchCriteria.getProductName())
+                            "%" + searchCriteria.getProductName() + "%")
             );
         }
         if (Objects.nonNull(searchCriteria.getProductCode())) {
             predicates.add(
                     this.criteriaBuilder.like(
                             reportRoot.get(Product_.PRODUCT_CODE),
-                            searchCriteria.getProductCode())
+                            "%" + searchCriteria.getProductCode() + "%")
             );
         }
         if (Objects.nonNull(searchCriteria.getNote())) {
             predicates.add(
                     this.criteriaBuilder.like(
                             reportRoot.get(Product_.NOTE),
-                            searchCriteria.getNote())
+                            "%" + searchCriteria.getNote() + "%")
             );
         }
         if (searchCriteria.getProductPriceInTo() > searchCriteria.getProductPriceInFrom()) {

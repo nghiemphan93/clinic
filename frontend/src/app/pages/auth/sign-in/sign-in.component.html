@@ -1,1 +1,40 @@
-<p>sign-in works!</p>
+<p>{{ isAuth$ | async }}</p>
+
+<section class="flex justify-center items-center mt-40">
+  <form
+    nz-form
+    [formGroup]="validateForm"
+    (ngSubmit)="submitForm()"
+    class="w-72"
+  >
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Please input your username!">
+        <nz-input-group nzPrefixIcon="user" class="mb-1.4">
+          <input
+            type="text"
+            nz-input
+            formControlName="userName"
+            placeholder="Username"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Please input your Password!">
+        <nz-input-group nzPrefixIcon="lock" class="mb-1.4">
+          <input
+            type="password"
+            nz-input
+            formControlName="password"
+            placeholder="Password"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <button [nzLoading]="isLoading" nz-button nzBlock [nzType]="'primary'">
+      Sign In
+    </button>
+  </form>
+</section>

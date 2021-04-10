@@ -1,1 +1,71 @@
-<p>sign-up works!</p>
+<p>{{ isAuth$ | async }}</p>
+
+<section class="flex justify-center items-center mt-40">
+  <form
+    nz-form
+    [formGroup]="validateForm"
+    (ngSubmit)="submitForm()"
+    class="w-72"
+  >
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Please input your username!">
+        <nz-input-group nzPrefixIcon="user" class="mb-1.4">
+          <input
+            type="text"
+            nz-input
+            formControlName="userName"
+            placeholder="Username"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Please input your Password!">
+        <nz-input-group nzPrefixIcon="lock" class="mb-1.4">
+          <input
+            type="password"
+            nz-input
+            formControlName="password"
+            placeholder="Password"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Please input your email!">
+        <nz-input-group nzPrefixIcon="mail" class="mb-1.4">
+          <input
+            type="text"
+            nz-input
+            formControlName="email"
+            placeholder="Email"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Please input your roles!">
+        <nz-select
+          class="w-full"
+          nzMode="tags"
+          nzPlaceHolder="Roles"
+          formControlName="roles"
+          nzSuffixIcon="control"
+        >
+          <nz-option
+            *ngFor="let role of roles"
+            [nzLabel]="role"
+            [nzValue]="role"
+          ></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <button [nzLoading]="isLoading" nz-button nzBlock [nzType]="'primary'">
+      Sign up
+    </button>
+  </form>
+</section>

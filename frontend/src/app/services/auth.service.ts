@@ -1,6 +1,6 @@
 import { Injectable, isDevMode } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { SignInRequest } from '../models/user/SignInRequest';
 import { JwtResponse } from '../models/user/JwtResponse';
@@ -10,6 +10,10 @@ import jwt_decode, { JwtPayload } from 'jwt-decode';
 
 const TOKEN_KEY = 'auth-token';
 const USER_KEY = 'auth-user';
+
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+};
 
 @Injectable({
   providedIn: 'root',
@@ -27,17 +31,19 @@ export class AuthService {
 
   initAuth() {
     const token = this.getToken();
-    const jwtPayload: JwtPayload = jwt_decode(token);
-    let JWT_EXP = ((jwtPayload.exp as unknown) as number) * 1000;
-    const NOW = Date.now();
-    const EXP_LIMIT = 0;
+    if (token) {
+      const jwtPayload: JwtPayload = jwt_decode(token);
+      let JWT_EXP = ((jwtPayload.exp as unknown) as number) * 1000;
+      const NOW = Date.now();
+      const EXP_LIMIT = 0;
 
-    if (JWT_EXP - NOW < EXP_LIMIT) {
-      this.signOut();
-    } else {
-      const cachedUser = this.getUserFromStorage();
-      this.isAuth.next(true);
-      this.userSubject.next(cachedUser);
+      if (JWT_EXP - NOW < EXP_LIMIT) {
+        this.signOut();
+      } else {
+        const cachedUser = this.getUserFromStorage();
+        this.isAuth.next(true);
+        this.userSubject.next(cachedUser);
+      }
     }
   }
 
@@ -55,7 +61,7 @@ export class AuthService {
 
   async signIn(signInRequest: SignInRequest) {
     const jwtResponse: JwtResponse = await this.http
-      .post<JwtResponse>(this.baseUrl + '/signin', signInRequest)
+      .post<JwtResponse>(this.baseUrl + '/signin', signInRequest, httpOptions)
       .toPromise();
     const newUser: User = {
       id: jwtResponse.id,
@@ -69,8 +75,10 @@ export class AuthService {
     this.isAuth.next(true);
   }
 
-  signUp(signUpRequest: SignUpRequest): void {
-    this.http.post<JwtResponse>(this.baseUrl + '/signup', signUpRequest);
+  async signUp(signUpRequest: SignUpRequest): Promise<void> {
+    await this.http
+      .post(this.baseUrl + '/signup', signUpRequest, httpOptions)
+      .toPromise();
   }
 
   signOut(): void {

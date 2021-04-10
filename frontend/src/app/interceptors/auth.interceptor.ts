@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
 import {
-  HttpRequest,
-  HttpHandler,
   HttpEvent,
+  HttpHandler,
   HttpInterceptor,
+  HttpRequest,
   HttpResponse,
 } from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { catchError, delay, map, retryWhen, take } from 'rxjs/operators';
-import { ResponseError } from '../models/error/ResponseError';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -23,7 +22,7 @@ export class AuthInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<unknown>> {
     let authReq = request;
     const token = this.authService.getToken();
-    if (token != null) {
+    if (token) {
       authReq = request.clone({
         headers: request.headers.set(this.TOKEN_HEADER_KEY, 'Bearer ' + token),
       });
@@ -37,20 +36,21 @@ export class AuthInterceptor implements HttpInterceptor {
         return event;
       }),
       retryWhen((errors) => {
+        const MAX_RETRY = 5;
         let retries = 0;
         return errors.pipe(
           delay(1000),
-          take(5),
+          take(MAX_RETRY),
           map((error) => {
-            if (retries++ === 4) {
+            if (retries++ === MAX_RETRY - 1) {
               throw error;
             }
           })
         );
       }),
-      catchError((err: ResponseError) => {
+      catchError((err) => {
         console.log(`request failed with error: ${JSON.stringify(err)}`);
-        return throwError(err);
+        return throwError(err.error);
       })
     );
   }

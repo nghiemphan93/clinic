@@ -7,6 +7,7 @@ import { JwtResponse } from '../models/user/JwtResponse';
 import { SignUpRequest } from '../models/user/SignUpRequest';
 import { User } from '../models/user/User';
 import jwt_decode, { JwtPayload } from 'jwt-decode';
+import { Role } from '../models/user/Role';
 
 const TOKEN_KEY = 'auth-token';
 const USER_KEY = 'auth-user';
@@ -66,7 +67,7 @@ export class AuthService {
     const newUser: User = {
       id: jwtResponse.id,
       email: jwtResponse.email,
-      roles: jwtResponse.roles,
+      roles: jwtResponse.roles.map((role) => new Role(0, role)),
       username: jwtResponse.username,
     };
     this.saveToken(jwtResponse.token);

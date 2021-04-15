@@ -1,1 +1,40 @@
-<p>user-list works!</p>
+<h2 class="text-center" nz-typography>Users</h2>
+
+<section class="container mx-auto max-w-3xl">
+  <section class="">
+    <nz-table
+      nzShowSizeChanger
+      [nzData]="users"
+      [nzFrontPagination]="false"
+      [nzLoading]="loading"
+      [nzTotal]="total"
+      [nzPageSize]="pageSize"
+      [nzPageIndex]="pageIndex"
+      (nzQueryParams)="onQueryParamsChange($event)"
+      nzSize="default"
+      nzPaginationPosition="both"
+      nzTableLayout="fixed"
+    >
+      <thead>
+        <tr>
+          <th nzColumnKey="username" [nzSortFn]="true">Username</th>
+          <th nzColumnKey="roles" [nzFilters]="filterRole" [nzFilterFn]="true">
+            Roles
+          </th>
+          <th nzColumnKey="email" [nzSortFn]="true">Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user?.username }}</td>
+          <td>
+            <p *ngFor="let role of user?.roles">
+              {{ role.role }}
+            </p>
+          </td>
+          <td>{{ user?.email }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </section>
+</section>

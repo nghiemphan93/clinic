@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
-import { Observable } from 'rxjs';
 import {
   FormBuilder,
   FormControl,
@@ -18,7 +17,6 @@ import { SignUpRequest } from '../../../models/user/SignUpRequest';
 })
 export class SignUpComponent implements OnInit {
   validateForm!: FormGroup;
-  isAuth$ = new Observable<boolean>();
   roles: Set<ERole> = new Set([
     ERole.ROLE_DOCTOR,
     ERole.ROLE_MANAGER,
@@ -33,8 +31,6 @@ export class SignUpComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.isAuth$ = this.authService.getAuth();
-
     this.validateForm = this.fb.group({
       userName: new FormControl('string', [Validators.required]),
       password: new FormControl('string', [Validators.required]),

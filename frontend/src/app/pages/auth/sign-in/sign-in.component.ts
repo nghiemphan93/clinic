@@ -5,11 +5,8 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { Observable } from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
-import { ERole } from '../../../models/user/ERole';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { SignUpRequest } from '../../../models/user/SignUpRequest';
 import { SignInRequest } from '../../../models/user/SignInRequest';
 import { Router } from '@angular/router';
 
@@ -20,7 +17,6 @@ import { Router } from '@angular/router';
 })
 export class SignInComponent implements OnInit {
   validateForm!: FormGroup;
-  isAuth$ = new Observable<boolean>();
   isLoading = false;
 
   constructor(
@@ -31,8 +27,6 @@ export class SignInComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.isAuth$ = this.authService.getAuth();
-
     this.validateForm = this.fb.group({
       userName: new FormControl('string', [Validators.required]),
       password: new FormControl('string', [Validators.required]),

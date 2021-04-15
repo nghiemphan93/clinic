@@ -19,7 +19,13 @@
       nzMode="inline"
       [nzInlineCollapsed]="isCollapsed"
     >
-      <li nz-submenu nzOpen nzTitle="Dashboard" nzIcon="dashboard">
+      <li
+        *ngIf="isAuth$ | async"
+        nz-submenu
+        nzOpen
+        nzTitle="Dashboard"
+        nzIcon="dashboard"
+      >
         <ul>
           <li nz-menu-item nzMatchRouter>
             <a routerLink="/welcome">Welcome</a>
@@ -37,16 +43,21 @@
       </li>
       <li nz-submenu nzOpen nzTitle="Auth" nzIcon="user">
         <ul>
-          <li nz-menu-item nzMatchRouter>
-            <a routerLink="/users"></a>
+          <li *ngIf="isAuth$ | async" nz-menu-item nzMatchRouter>
+            <a routerLink="/users">Users</a>
           </li>
-          <li nz-menu-item nzMatchRouter>
+          <li *ngIf="(isAuth$ | async) === false" nz-menu-item nzMatchRouter>
             <a routerLink="/auth/signin">Sign In</a>
           </li>
-          <li nz-menu-item nzMatchRouter>
+          <li *ngIf="(isAuth$ | async) === false" nz-menu-item nzMatchRouter>
             <a routerLink="/auth/signup">Sign Up</a>
           </li>
-          <li nz-menu-item nzMatchRouter>
+          <li
+            *ngIf="isAuth$ | async"
+            nz-menu-item
+            nzMatchRouter
+            (click)="signOut()"
+          >
             <a>Sign Out</a>
           </li>
         </ul>

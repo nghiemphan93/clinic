@@ -14,6 +14,7 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { NZ_CONFIG, NzConfig } from 'ng-zorro-antd/core/config';
+import { NzMessageModule } from 'ng-zorro-antd/message';
 
 registerLocaleData(vi);
 
@@ -33,6 +34,7 @@ const ngZorroConfig: NzConfig = {
     NzLayoutModule,
     NzMenuModule,
     HttpClientModule,
+    NzMessageModule,
   ],
   providers: [
     { provide: NZ_I18N, useValue: vi_VN },

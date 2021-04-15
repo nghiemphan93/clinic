@@ -5,6 +5,7 @@ import com.springbootjwtpostgres.backend.payload.request.SignupRequest;
 import com.springbootjwtpostgres.backend.payload.response.JwtResponse;
 import com.springbootjwtpostgres.backend.security.jwt.JwtUtils;
 import com.springbootjwtpostgres.backend.security.services.UserDetailsImpl;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -105,7 +106,6 @@ public class AuthController {
 
         user.setRoles(roles);
         userRepo.save(user);
-
-        return ResponseEntity.ok("User registered successfully!");
+        return ResponseEntity.ok(user);
     }
 }

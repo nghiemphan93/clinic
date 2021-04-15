@@ -9,6 +9,7 @@ import {
 import { ERole } from '../../../models/user/ERole';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { SignUpRequest } from '../../../models/user/SignUpRequest';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-up',
@@ -27,7 +28,8 @@ export class SignUpComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private fb: FormBuilder,
-    private messageService: NzMessageService
+    private messageService: NzMessageService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -60,6 +62,7 @@ export class SignUpComponent implements OnInit {
       await this.authService.signUp(signUpRequest);
       this.messageService.success('user created successfully!!!');
       this.validateForm.reset();
+      await this.router.navigate(['auth/signin']);
     } catch (e) {
       this.messageService.error(e.message);
     } finally {

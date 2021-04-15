@@ -4,9 +4,9 @@ export class User {
   id: number;
   username: string;
   email: string;
-  roles: Set<ERole>;
+  roles: ERole[];
 
-  constructor(id: number, username: string, email: string, roles: Set<ERole>) {
+  constructor(id: number, username: string, email: string, roles: ERole[]) {
     this.id = id;
     this.username = username;
     this.email = email;

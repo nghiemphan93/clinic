@@ -82,26 +82,26 @@ export class AuthService {
   }
 
   signOut(): void {
-    sessionStorage.clear();
+    localStorage.clear();
     this.isAuth.next(false);
     this.userSubject.next(null);
   }
 
   saveToken(token: string): void {
-    sessionStorage.removeItem(TOKEN_KEY);
-    sessionStorage.setItem(TOKEN_KEY, token);
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.setItem(TOKEN_KEY, token);
   }
 
   getToken(): string {
-    return sessionStorage.getItem(TOKEN_KEY) || '';
+    return localStorage.getItem(TOKEN_KEY) || '';
   }
 
   saveUser(user: User): void {
-    sessionStorage.removeItem(USER_KEY);
-    sessionStorage.setItem(USER_KEY, JSON.stringify(user));
+    localStorage.removeItem(USER_KEY);
+    localStorage.setItem(USER_KEY, JSON.stringify(user));
   }
 
   private getUserFromStorage(): User {
-    return (sessionStorage.getItem(USER_KEY) as unknown) as User;
+    return JSON.parse(<string>localStorage.getItem(USER_KEY));
   }
 }

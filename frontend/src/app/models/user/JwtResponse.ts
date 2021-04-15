@@ -6,7 +6,7 @@ export class JwtResponse {
   id: number;
   username: string;
   email: string;
-  roles: Set<ERole>;
+  roles: ERole[];
 
   constructor(
     token: string,
@@ -14,7 +14,7 @@ export class JwtResponse {
     id: number,
     username: string,
     email: string,
-    roles: Set<ERole>
+    roles: ERole[]
   ) {
     this.token = token;
     this.type = type;

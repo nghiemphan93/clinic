@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './guards/auth.guard';
+import { ERole } from './models/user/ERole';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/welcome' },
@@ -7,6 +9,8 @@ const routes: Routes = [
     path: 'welcome',
     loadChildren: () =>
       import('./pages/welcome/welcome.module').then((m) => m.WelcomeModule),
+    canActivate: [AuthGuard],
+    data: { roles: [ERole.ROLE_MANAGER] },
   },
   {
     path: 'auth',

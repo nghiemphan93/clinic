@@ -21,11 +21,15 @@ const routes: Routes = [
     path: 'users',
     loadChildren: () =>
       import('./pages/user/user.module').then((m) => m.UserModule),
+    canActivate: [AuthGuard],
+    data: { roles: [ERole.ROLE_MANAGER] },
   },
   {
     path: 'reports',
     loadChildren: () =>
       import('./pages/report/report.module').then((m) => m.ReportModule),
+    canActivate: [AuthGuard],
+    data: { roles: [ERole.ROLE_MANAGER] },
   },
   {
     path: 'products',

@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { map } from 'rxjs/operators';
 import { ERole } from '../models/user/ERole';
+import { User } from '../models/user/User';
 
 @Injectable({
   providedIn: 'root',
@@ -28,22 +29,28 @@ export class AuthGuard implements CanActivate {
     return this.authService.getUser().pipe(
       map((currentUser) => {
         if (currentUser) {
-          let hasRole = false;
-          requiredRoles.forEach((requiredRole: ERole) => {
-            if (currentUser.roles.includes(requiredRole)) {
-              hasRole = true;
-            }
-          });
-          if (hasRole) {
-            return true;
-          }
-          this.router.navigate(['products']);
-          return false;
+          return this.hasRole(requiredRoles, currentUser);
         } else {
           this.router.navigate(['auth/signin']);
           return false;
         }
       })
     );
+  }
+
+  private hasRole(requiredRoles: Set<ERole>, currentUser: User) {
+    let hasRole = false;
+    requiredRoles.forEach((requiredRole: ERole) => {
+      if (
+        currentUser.roles.findIndex((role) => role.role === requiredRole) !== -1
+      ) {
+        hasRole = true;
+      }
+    });
+    if (hasRole) {
+      return true;
+    }
+    this.router.navigate(['products']);
+    return false;
   }
 }

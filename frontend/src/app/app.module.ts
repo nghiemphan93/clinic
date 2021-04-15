@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NZ_I18N, vi_VN } from 'ng-zorro-antd/i18n';
+import { en_US, NZ_I18N, vi_VN } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import vi from '@angular/common/locales/vi';
 import { FormsModule } from '@angular/forms';
@@ -15,6 +15,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { NZ_CONFIG, NzConfig } from 'ng-zorro-antd/core/config';
 import { NzMessageModule } from 'ng-zorro-antd/message';
+import { ErrorInterceptor } from './interceptors/error.interceptor';
 
 registerLocaleData(vi);
 
@@ -37,8 +38,9 @@ const ngZorroConfig: NzConfig = {
     NzMessageModule,
   ],
   providers: [
-    { provide: NZ_I18N, useValue: vi_VN },
+    { provide: NZ_I18N, useValue: en_US },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: NZ_CONFIG, useValue: ngZorroConfig },
   ],
   bootstrap: [AppComponent],

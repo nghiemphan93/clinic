@@ -65,16 +65,11 @@ export class UserListComponent implements OnInit {
     this.visible = false;
     this.loadDataFromServer(
       new BasePage(),
-      new UserSearchCriteria(this.searchValue, '')
+      new UserSearchCriteria(this.searchValue, this.searchValue)
     );
   }
 
   focusOnSearchInput() {
-    if (this.searchInput) {
-      setTimeout(() => {
-        console.log(this.searchInput);
-        this.searchInput?.nativeElement.focus();
-      }, 100);
-    }
+    this.searchInput?.nativeElement.focus();
   }
 }

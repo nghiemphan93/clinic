@@ -6,6 +6,7 @@ import { BaseResponse } from '../models/base/BaseResponse';
 import { nameof } from '../models/base/Utils';
 import { UserSearchCriteria } from '../models/user/UserSearchCriteria';
 import { User } from '../models/user/User';
+import { Role } from '../models/user/Role';
 
 @Injectable({
   providedIn: 'root',
@@ -68,8 +69,14 @@ export class UserService {
     return this.http.put<User>(newUrl, updatedEntity);
   }
 
-  delete(id: number): void {
+  delete(id: number): Observable<Object> {
     const newUrl = `${this.baseUrl}/${id}`;
-    this.http.delete(newUrl);
+    console.log(newUrl);
+    return this.http.delete(newUrl);
+  }
+
+  getAllRoles(): Observable<Role[]> {
+    const newUrl = `${this.baseUrl}/roles`;
+    return this.http.get<Role[]>(newUrl);
   }
 }

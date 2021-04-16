@@ -1,11 +1,10 @@
 import { ERole } from './ERole';
 
 export class Role {
-  id: number;
+  id: number = 0;
   role: ERole;
 
-  constructor(id: number, role: ERole) {
-    this.id = id;
+  constructor(role: ERole) {
     this.role = role;
   }
 }

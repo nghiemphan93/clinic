@@ -67,7 +67,7 @@ export class AuthService {
     const newUser: User = {
       id: jwtResponse.id,
       email: jwtResponse.email,
-      roles: jwtResponse.roles.map((role) => new Role(0, role)),
+      roles: jwtResponse.roles.map((role) => new Role(role)),
       username: jwtResponse.username,
     };
     this.saveToken(jwtResponse.token);

@@ -1,78 +1,90 @@
-<h2 class="text-center" nz-typography>Users</h2>
-
 <section class="container mx-auto max-w-3xl">
-  <section class="">
-    <nz-table
-      nzShowSizeChanger
-      [nzData]="users"
-      [nzFrontPagination]="false"
-      [nzLoading]="loading"
-      [nzTotal]="total"
-      [nzPageSize]="pageSize"
-      [nzPageIndex]="pageIndex"
-      (nzQueryParams)="onQueryParamsChange($event)"
-      nzSize="default"
-      nzPaginationPosition="both"
-      nzTableLayout="fixed"
-    >
-      <thead>
-        <tr>
-          <th nzColumnKey="username" [nzSortFn]="true" nzCustomFilter>
-            Username
-            <nz-filter-trigger
-              [(nzVisible)]="visible"
-              [nzActive]="searchValue.length > 0"
-              [nzDropdownMenu]="menu"
-              (click)="focusOnSearchInput()"
-            >
-              <i nz-icon nzType="search"></i>
-            </nz-filter-trigger>
-          </th>
-          <th nzColumnKey="roles">Roles</th>
-          <th nzColumnKey="email" [nzSortFn]="true">Email</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          *ngFor="let user of users"
-          routerLink="/users/{{ user?.id }}"
-          class="cursor-pointer"
-        >
-          <td>{{ user?.username }}</td>
-          <td>
-            <p *ngFor="let role of user?.roles">
-              {{ role.role }}
-            </p>
-          </td>
-          <td>{{ user?.email }}</td>
-        </tr>
-      </tbody>
-    </nz-table>
-  </section>
-</section>
+  <h2 class="text-center" nz-typography>Users</h2>
+  <button
+    class="flex justify-center items-center mb-3"
+    nz-button
+    nzType="primary"
+    routerLink="/users/create"
+  >
+    <i nz-icon nzType="plus" nzTheme="outline"></i>New
+  </button>
 
-<nz-dropdown-menu #menu="nzDropdownMenu">
-  <div class="ant-table-filter-dropdown">
-    <div class="search-box">
-      <input
-        type="text"
-        nz-input
-        placeholder="Search name"
-        [(ngModel)]="searchValue"
-        (keydown.enter)="search()"
-        #searchInput
-        autofocus
-      />
-      <button
-        nz-button
-        nzSize="small"
-        nzType="primary"
-        (click)="search()"
-        class="search-button"
+  <section class="container mx-auto max-w-3xl">
+    <section class="">
+      <nz-table
+        nzShowSizeChanger
+        [nzData]="users"
+        [nzFrontPagination]="false"
+        [nzLoading]="loading"
+        [nzTotal]="total"
+        [nzPageSize]="pageSize"
+        [nzPageIndex]="pageIndex"
+        (nzQueryParams)="onQueryParamsChange($event)"
+        nzSize="default"
+        nzPaginationPosition="bottom"
+        nzTableLayout="fixed"
       >
-        Search
-      </button>
-      <button nz-button nzSize="small" (click)="reset()">Reset</button>
+        <thead>
+          <tr>
+            <th nzColumnKey="id" [nzSortFn]="true">Id</th>
+            <th nzColumnKey="username" [nzSortFn]="true" nzCustomFilter>
+              Username
+              <nz-filter-trigger
+                [(nzVisible)]="visible"
+                [nzActive]="searchValue.length > 0"
+                [nzDropdownMenu]="menu"
+                (click)="focusOnSearchInput()"
+              >
+                <i nz-icon nzType="search"></i>
+              </nz-filter-trigger>
+            </th>
+            <th nzColumnKey="roles">Roles</th>
+            <th nzColumnKey="email" [nzSortFn]="true">Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let user of users"
+            routerLink="/users/{{ user?.id }}"
+            class="cursor-pointer"
+          >
+            <td>{{ user?.id }}</td>
+            <td>{{ user?.username }}</td>
+            <td>
+              <p *ngFor="let role of user?.roles">
+                {{ role.role }}
+              </p>
+            </td>
+            <td>{{ user?.email }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </section>
+  </section>
+
+  <nz-dropdown-menu #menu="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+      <div class="search-box">
+        <input
+          type="text"
+          nz-input
+          placeholder="Search name"
+          [(ngModel)]="searchValue"
+          (keydown.enter)="search()"
+          #searchInput
+          autofocus
+        />
+        <button
+          nz-button
+          nzSize="small"
+          nzType="primary"
+          (click)="search()"
+          class="search-button"
+        >
+          Search
+        </button>
+        <button nz-button nzSize="small" (click)="reset()">Reset</button>
+      </div>
     </div>
-  </div>
-</nz-dropdown-menu>
+  </nz-dropdown-menu>
+</section>

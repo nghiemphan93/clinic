@@ -1,1 +1,115 @@
-<p>user-create works!</p>
+<section
+  *ngIf="!user"
+  class="text-center w-full h-full flex justify-center items-center"
+>
+  <nz-spin nzSize="large" nzSimple></nz-spin>
+</section>
+
+<section *ngIf="user && (roles$ | async)">
+  <nz-button-group class="flex justify-center mt-40 mb-5">
+    <button
+      class="flex justify-center items-center"
+      nz-button
+      nzType="default"
+      routerLink="/users"
+    >
+      <i nz-icon nzType="left" nzTheme="outline"></i>
+      Back
+    </button>
+    <button
+      *ngIf="isUpdated"
+      nz-button
+      nzType="primary"
+      routerLink="/users/{{ userId }}"
+    >
+      Detail
+    </button>
+    <button
+      *ngIf="isDetailed"
+      nz-button
+      nzType="primary"
+      routerLink="/users/{{ userId }}/edit"
+    >
+      Edit
+    </button>
+    <button
+      *ngIf="!isCreated"
+      nz-button
+      nzType="primary"
+      nzDanger
+      nz-popconfirm
+      nzPopconfirmTitle="Still delete!!!"
+      (nzOnConfirm)="delete()"
+      nzPopconfirmPlacement="bottom"
+      [nzLoading]="isLoading"
+      nzShape="round"
+    >
+      Delete
+    </button>
+  </nz-button-group>
+
+  <section class="flex justify-center items-center">
+    <form
+      nz-form
+      [formGroup]="validateForm"
+      (ngSubmit)="submitForm()"
+      class="w-72"
+    >
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Please input your username!">
+          <nz-input-group nzPrefixIcon="user" class="mb-1.4">
+            <input
+              type="text"
+              nz-input
+              formControlName="userName"
+              placeholder="Username"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Please input your email!">
+          <nz-input-group nzPrefixIcon="mail" class="mb-1.4">
+            <input
+              type="text"
+              nz-input
+              formControlName="email"
+              placeholder="Email"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Please input your roles!">
+          <nz-select
+            class="w-full"
+            nzMode="tags"
+            nzPlaceHolder="Roles"
+            formControlName="roles"
+            nzSuffixIcon="control"
+          >
+            <nz-option
+              *ngFor="let role of roles$ | async"
+              [nzLabel]="role.role"
+              [nzValue]="role"
+            >
+              clgt
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <button
+        *ngIf="isCreated || isUpdated"
+        [nzLoading]="isLoading"
+        nz-button
+        nzBlock
+        [nzType]="'primary'"
+      >
+        Submit
+      </button>
+    </form>
+  </section>
+</section>

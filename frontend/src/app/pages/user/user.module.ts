@@ -9,10 +9,14 @@ import { UserEditComponent } from './user-edit/user-edit.component';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
 
 @NgModule({
   declarations: [
@@ -31,6 +35,11 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     NzButtonModule,
     NzIconModule,
     NzInputModule,
+    ReactiveFormsModule,
+    NzFormModule,
+    NzSelectModule,
+    NzPopconfirmModule,
+    NzSpinModule,
   ],
 })
 export class UserModule {}

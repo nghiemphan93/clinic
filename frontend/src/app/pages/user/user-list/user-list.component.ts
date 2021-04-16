@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../../services/user.service';
 import { User } from '../../../models/user/User';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { BasePage } from '../../../models/base/BasePage';
 import { UserSearchCriteria } from '../../../models/user/UserSearchCriteria';
 import { SortEDirection } from '../../../models/base/SortEDirection';
-import { ERole } from '../../../models/user/ERole';
 
 @Component({
   selector: 'app-user-list',
@@ -18,11 +17,11 @@ export class UserListComponent implements OnInit {
   pageIndex = 1;
   loading = true;
   users: User[] = [];
-  filterRole = [
-    { text: 'MANAGER', value: ERole.ROLE_MANAGER },
-    { text: 'DOCTOR', value: ERole.ROLE_DOCTOR },
-    { text: 'NURSE', value: ERole.ROLE_NURSE },
-  ];
+  searchValue = '';
+  visible = false;
+  @ViewChild('searchInput') searchInput:
+    | ElementRef<HTMLInputElement>
+    | undefined;
 
   constructor(private userService: UserService) {}
 
@@ -52,7 +51,30 @@ export class UserListComponent implements OnInit {
         pageSize,
         sortDirection === 'ascend' ? SortEDirection.ASC : SortEDirection.DESC,
         sortBy
-      )
+      ),
+      new UserSearchCriteria(this.searchValue, this.searchValue)
     );
+  }
+
+  reset(): void {
+    this.searchValue = '';
+    this.search();
+  }
+
+  search(): void {
+    this.visible = false;
+    this.loadDataFromServer(
+      new BasePage(),
+      new UserSearchCriteria(this.searchValue, '')
+    );
+  }
+
+  focusOnSearchInput() {
+    if (this.searchInput) {
+      setTimeout(() => {
+        console.log(this.searchInput);
+        this.searchInput?.nativeElement.focus();
+      }, 100);
+    }
   }
 }

@@ -17,15 +17,27 @@
     >
       <thead>
         <tr>
-          <th nzColumnKey="username" [nzSortFn]="true">Username</th>
-          <th nzColumnKey="roles" [nzFilters]="filterRole" [nzFilterFn]="true">
-            Roles
+          <th nzColumnKey="username" [nzSortFn]="true" nzCustomFilter>
+            Username
+            <nz-filter-trigger
+              [(nzVisible)]="visible"
+              [nzActive]="searchValue.length > 0"
+              [nzDropdownMenu]="menu"
+              (click)="focusOnSearchInput()"
+            >
+              <i nz-icon nzType="search"></i>
+            </nz-filter-trigger>
           </th>
+          <th nzColumnKey="roles">Roles</th>
           <th nzColumnKey="email" [nzSortFn]="true">Email</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let user of users">
+        <tr
+          *ngFor="let user of users"
+          routerLink="/users/{{ user?.id }}"
+          class="cursor-pointer"
+        >
           <td>{{ user?.username }}</td>
           <td>
             <p *ngFor="let role of user?.roles">
@@ -38,3 +50,29 @@
     </nz-table>
   </section>
 </section>
+
+<nz-dropdown-menu #menu="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="search-box">
+      <input
+        type="text"
+        nz-input
+        placeholder="Search name"
+        [(ngModel)]="searchValue"
+        (keydown.enter)="search()"
+        #searchInput
+        autofocus
+      />
+      <button
+        nz-button
+        nzSize="small"
+        nzType="primary"
+        (click)="search()"
+        class="search-button"
+      >
+        Search
+      </button>
+      <button nz-button nzSize="small" (click)="reset()">Reset</button>
+    </div>
+  </div>
+</nz-dropdown-menu>

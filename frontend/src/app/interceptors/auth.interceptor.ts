@@ -50,7 +50,10 @@ export class AuthInterceptor implements HttpInterceptor {
       }),
       catchError((err) => {
         console.log(`request failed with error: ${JSON.stringify(err)}`);
-        return throwError(err.error);
+        if (err.error) {
+          return throwError(err.error);
+        }
+        return throwError(err);
       })
     );
   }

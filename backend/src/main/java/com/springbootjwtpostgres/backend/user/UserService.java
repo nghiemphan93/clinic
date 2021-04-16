@@ -29,11 +29,11 @@ public class UserService {
     }
 
     public User updateUser(Long userId, User newUser) throws NotFoundException {
+        System.out.println(newUser);
         User oldUser = this.userRepo.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User not found"));
         oldUser.setEmail(newUser.getEmail());
         oldUser.setUsername(newUser.getUsername());
-        oldUser.setPassword(newUser.getPassword());
         oldUser.setRoles(newUser.getRoles());
         return this.userRepo.save(oldUser);
     }

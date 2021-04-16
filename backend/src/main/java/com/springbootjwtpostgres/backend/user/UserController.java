@@ -7,14 +7,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
+@CrossOrigin()
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
     private final UserService userService;
+    private final RoleService roleService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @GetMapping
@@ -33,13 +37,18 @@ public class UserController {
         return new ResponseEntity<>(this.userService.createUser(user), HttpStatus.OK);
     }
 
-    @PutMapping("{userId}")
+    @PutMapping("/{userId}")
     public ResponseEntity<User> updateUser(@PathVariable Long userId, @RequestBody @Valid User newUser) throws NotFoundException {
         return new ResponseEntity<>(this.userService.updateUser(userId, newUser), HttpStatus.OK);
     }
 
-    @DeleteMapping("{/userId}")
+    @DeleteMapping("/{userId}")
     public void deleteUser(@PathVariable Long userId) {
         this.userService.deleteUser(userId);
+    }
+
+    @GetMapping("/roles")
+    public ResponseEntity<List<Role>> getRoles() {
+        return new ResponseEntity<>(this.roleService.getAll(), HttpStatus.OK);
     }
 }

@@ -11,6 +11,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 @Repository
@@ -46,15 +47,15 @@ public class UserCriteriaRepo {
         if (Objects.nonNull(userSearchCriteria.getUsername())) {
             predicates.add(
                     this.criteriaBuilder.like(
-                            userRoot.get(User_.USERNAME),
-                            "%" + userSearchCriteria.getUsername() + "%"
+                            this.criteriaBuilder.upper(userRoot.get(User_.USERNAME)),
+                            "%" + userSearchCriteria.getUsername().toUpperCase() + "%"
                     ));
         }
         if (Objects.nonNull(userSearchCriteria.getEmail())) {
             predicates.add(
                     this.criteriaBuilder.like(
-                            userRoot.get(User_.EMAIL),
-                            "%" + userSearchCriteria.getEmail() + "%"
+                            this.criteriaBuilder.upper(userRoot.get(User_.EMAIL)),
+                            "%" + userSearchCriteria.getEmail().toUpperCase() + "%"
                     ));
         }
         return this.criteriaBuilder.and(predicates.toArray(new Predicate[0]));

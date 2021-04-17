@@ -11,14 +11,12 @@ export class Bill extends BaseEntity {
   order: Order;
 
   constructor(
-    id: number,
-    createdAt: Date,
     billType: EOrderType,
     billStatus: EOrderStatus,
     billTotalPrice: number,
     order: Order
   ) {
-    super(id, createdAt);
+    super();
     this.billType = billType;
     this.billStatus = billStatus;
     this.billTotalPrice = billTotalPrice;

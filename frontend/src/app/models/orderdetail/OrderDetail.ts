@@ -9,14 +9,12 @@ export class OrderDetail extends BaseEntity {
   order: Order;
 
   constructor(
-    id: number,
-    createdAt: Date,
     quantity: number,
     totalPricePerProduct: number,
     product: Product,
     order: Order
   ) {
-    super(id, createdAt);
+    super();
     this.quantity = quantity;
     this.totalPricePerProduct = totalPricePerProduct;
     this.product = product;

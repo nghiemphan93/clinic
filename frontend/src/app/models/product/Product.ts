@@ -8,15 +8,13 @@ export class Product extends BaseEntity {
   note: string;
 
   constructor(
-    id: number,
-    createdAt: Date,
     productName: string,
     productCode: string,
     productPriceIn: number,
     productPriceOut: number,
     note: string
   ) {
-    super(id, createdAt);
+    super();
     this.productName = productName;
     this.productCode = productCode;
     this.productPriceIn = productPriceIn;

@@ -5,13 +5,8 @@ export class Inventory extends BaseEntity {
   currentQuantity: number;
   product: Product;
 
-  constructor(
-    id: number,
-    createdAt: Date,
-    currentQuantity: number,
-    product: Product
-  ) {
-    super(id, createdAt);
+  constructor(currentQuantity: number, product: Product) {
+    super();
     this.currentQuantity = currentQuantity;
     this.product = product;
   }

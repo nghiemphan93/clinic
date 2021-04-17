@@ -8,13 +8,11 @@ export class Order extends BaseEntity {
   orderTotalPrice: number;
 
   constructor(
-    id: number,
-    createdAt: Date,
     orderType: EOrderType,
     orderStatus: EOrderStatus,
     orderTotalPrice: number
   ) {
-    super(id, createdAt);
+    super();
     this.orderType = orderType;
     this.orderStatus = orderStatus;
     this.orderTotalPrice = orderTotalPrice;

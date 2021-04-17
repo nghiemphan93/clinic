@@ -9,15 +9,13 @@ export class Report extends BaseEntity {
   totalPriceOut: number;
 
   constructor(
-    id: number,
-    createdAt: Date,
     reportPeriod: EReportPeriod,
     beforeQuantity: number,
     afterQuantity: number,
     totalPriceIn: number,
     totalPriceOut: number
   ) {
-    super(id, createdAt);
+    super();
     this.reportPeriod = reportPeriod;
     this.beforeQuantity = beforeQuantity;
     this.afterQuantity = afterQuantity;

@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 @RequestMapping("/api/products")
 @AllArgsConstructor
@@ -17,7 +18,7 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<Page<Product>> getAll(ProductPage reportPage,
-                                               ProductSearchCriteria searchCriteria) {
+                                                ProductSearchCriteria searchCriteria) {
         return new ResponseEntity<>(
                 this.service.getAll(reportPage, searchCriteria),
                 HttpStatus.OK

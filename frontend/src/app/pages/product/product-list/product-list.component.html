@@ -4,7 +4,7 @@
     class="flex justify-center items-center mb-3"
     nz-button
     nzType="primary"
-    routerLink="/users/create"
+    routerLink="/products/create"
   >
     <i nz-icon nzType="plus" nzTheme="outline"></i>New
   </button>
@@ -54,8 +54,8 @@
             <td>{{ product?.id }}</td>
             <td>{{ product?.productName }}</td>
             <td>{{ product?.productCode }}</td>
-            <td>{{ product?.productPriceIn }}</td>
-            <td>{{ product?.productPriceOut }}</td>
+            <td>{{ product?.productPriceIn | number: "1.0-0" }}{{ " đ" }}</td>
+            <td>{{ product?.productPriceOut | number: "1.0-0" }}{{ " đ" }}</td>
             <td>{{ product?.inventory?.currentQuantity }}</td>
             <td>{{ product?.note }}</td>
           </tr>

@@ -58,7 +58,7 @@ public class UserCriteriaRepo {
                             "%" + userSearchCriteria.getEmail().toUpperCase() + "%"
                     ));
         }
-        return this.criteriaBuilder.or(predicates.toArray(new Predicate[0]));
+        return this.criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }
 
     private void setOrder(UserPage userPage,

@@ -31,9 +31,7 @@ export class ProductListComponent implements OnInit {
     private messageService: NzMessageService
   ) {}
 
-  ngOnInit(): void {
-    this.loadDataFromServer();
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy() {
     if (this.subscription) {
@@ -67,12 +65,13 @@ export class ProductListComponent implements OnInit {
     const sortBy = (currentSort && currentSort.key) || 'createdAt';
     const sortDirection = (currentSort && currentSort.value) || 'ascend';
 
-    const page = new BasePage();
-    page.pageNumber = pageIndex - 1;
-    page.pageSize = pageSize;
-    page.sortDirection =
-      sortDirection === 'ascend' ? SortEDirection.ASC : SortEDirection.DESC;
-    page.sortBy = sortBy;
+    const page: BasePage = {
+      pageNumber: pageIndex - 1,
+      pageSize: pageSize,
+      sortDirection:
+        sortDirection === 'ascend' ? SortEDirection.ASC : SortEDirection.DESC,
+      sortBy: sortBy,
+    };
 
     this.loadDataFromServer(page);
   }

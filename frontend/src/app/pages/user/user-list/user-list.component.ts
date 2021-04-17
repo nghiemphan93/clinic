@@ -33,9 +33,7 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   constructor(private userService: UserService) {}
 
-  ngOnInit(): void {
-    this.loadDataFromServer();
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy() {
     if (this.subscription) {
@@ -50,8 +48,6 @@ export class UserListComponent implements OnInit, OnDestroy {
         this.loading = false;
         this.total = data.totalElements;
         this.users = data.content;
-
-        console.log(data);
       })
     );
   }
@@ -62,16 +58,17 @@ export class UserListComponent implements OnInit, OnDestroy {
     const sortBy = (currentSort && currentSort.key) || 'createdAt';
     const sortDirection = (currentSort && currentSort.value) || 'ascend';
 
-    const page = new BasePage();
-    page.pageNumber = pageIndex - 1;
-    page.pageSize = pageSize;
-    page.sortDirection =
-      sortDirection === 'ascend' ? SortEDirection.ASC : SortEDirection.DESC;
-    page.sortBy = sortBy;
+    const page: BasePage = {
+      pageNumber: pageIndex - 1,
+      pageSize: pageSize,
+      sortDirection:
+        sortDirection === 'ascend' ? SortEDirection.ASC : SortEDirection.DESC,
+      sortBy: sortBy,
+    };
 
-    const searchCriteria = new UserSearchCriteria();
-    searchCriteria.username = this.searchValue;
-    searchCriteria.email = this.searchValue;
+    const searchCriteria: UserSearchCriteria = {
+      username: this.searchValue,
+    };
 
     this.loadDataFromServer(page, searchCriteria);
   }
@@ -84,10 +81,11 @@ export class UserListComponent implements OnInit, OnDestroy {
   search(): void {
     this.visible = false;
 
-    const page = new BasePage();
-    const searchCriteria = new UserSearchCriteria();
-    searchCriteria.username = this.searchValue;
-    searchCriteria.email = this.searchValue;
+    const page: BasePage = new BasePage();
+
+    const searchCriteria: UserSearchCriteria = {
+      username: this.searchValue,
+    };
 
     this.loadDataFromServer(page, searchCriteria);
   }

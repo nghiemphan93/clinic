@@ -1,10 +1,7 @@
 import { ERole } from './ERole';
+import { BaseEntity } from '../base/BaseEntity';
 
-export class Role {
-  id: number = 0;
-  role: ERole;
-
-  constructor(role: ERole) {
-    this.role = role;
-  }
+export class Role extends BaseEntity {
+  id?: number;
+  role!: ERole;
 }

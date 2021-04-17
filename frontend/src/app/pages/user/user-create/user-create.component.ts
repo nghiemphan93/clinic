@@ -69,7 +69,7 @@ export class UserCreateComponent implements OnInit, OnDestroy {
         const newUser = new User();
         newUser.username = '';
         newUser.email = '';
-        newUser.roles = [new Role(ERole.ROLE_NURSE)];
+        newUser.roles = [];
         this.user = newUser;
         this.prepareFormCreate();
         break;
@@ -106,8 +106,8 @@ export class UserCreateComponent implements OnInit, OnDestroy {
 
   prepareFormCreate() {
     this.validateForm = this.fb.group({
-      userName: new FormControl(this.user.username, [Validators.required]),
-      email: new FormControl(this.user.email, [
+      userName: new FormControl(this.user?.username, [Validators.required]),
+      email: new FormControl(this.user?.email, [
         Validators.required,
         Validators.email,
       ]),

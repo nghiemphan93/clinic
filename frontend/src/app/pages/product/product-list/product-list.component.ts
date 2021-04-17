@@ -7,6 +7,7 @@ import { SortEDirection } from '../../../models/base/SortEDirection';
 import { ProductSearchCriteria } from '../../../models/product/ProductSearchCriteria';
 import { Product } from '../../../models/product/Product';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { ProductColumnFilter } from '../../../models/product/ProductColumnFilter';
 
 @Component({
   selector: 'app-product-list',
@@ -21,10 +22,21 @@ export class ProductListComponent implements OnInit {
   loading = true;
   products: Product[] = [];
   searchValue = '';
-  visible = false;
-  @ViewChild('searchInput') searchInput:
-    | ElementRef<HTMLInputElement>
-    | undefined;
+
+  columnFilter: ProductColumnFilter = {
+    productName: {
+      visible: false,
+    },
+    productCode: {
+      visible: false,
+    },
+    productPriceIn: {
+      visible: false,
+    },
+    productPriceOut: {
+      visible: false,
+    },
+  };
 
   constructor(
     private productService: ProductService,
@@ -73,20 +85,47 @@ export class ProductListComponent implements OnInit {
       sortBy: sortBy,
     };
 
-    this.loadDataFromServer(page);
+    const searchCriteria: ProductSearchCriteria = this.getSearchCriteria();
+
+    this.loadDataFromServer(page, searchCriteria);
+  }
+
+  private getSearchCriteria(): ProductSearchCriteria {
+    const searchCriteria: ProductSearchCriteria = {
+      productName: this.columnFilter.productName.productName,
+      productCode: this.columnFilter.productName.productName,
+      productPriceInFrom: this.columnFilter.productPriceIn.productPriceInFrom,
+      productPriceInTo: this.columnFilter.productPriceIn.productPriceInTo,
+      productPriceOutFrom: this.columnFilter.productPriceOut
+        .productPriceOutFrom,
+      productPriceOutTo: this.columnFilter.productPriceOut.productPriceOutTo,
+    };
+    return searchCriteria;
   }
 
   reset(): void {
-    this.searchValue = '';
-    this.search();
+    this.resetAllColumns();
+    this.filterColumns();
   }
 
-  search(): void {
-    this.visible = false;
-    this.loadDataFromServer(new BasePage());
+  private resetAllColumns() {
+    this.columnFilter = {
+      productName: { visible: false },
+      productCode: { visible: false },
+      productPriceIn: { visible: false },
+      productPriceOut: { visible: false },
+    };
   }
 
-  focusOnSearchInput() {
-    this.searchInput?.nativeElement.focus();
+  private setAllFiltersMenuInvisible() {
+    this.columnFilter.productName.visible = false;
+    this.columnFilter.productCode.visible = false;
+    this.columnFilter.productPriceIn.visible = false;
+    this.columnFilter.productPriceOut.visible = false;
+  }
+
+  filterColumns() {
+    this.setAllFiltersMenuInvisible();
+    this.loadDataFromServer(new BasePage(), this.getSearchCriteria());
   }
 }

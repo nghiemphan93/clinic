@@ -1,4 +1,4 @@
-<section class="container mx-auto max-w-7xl">
+<section class="container mx-auto max-w-4xl">
   <h2 class="text-center" nz-typography>Products</h2>
   <button
     class="flex justify-center items-center mb-3"
@@ -9,7 +9,7 @@
     <i nz-icon nzType="plus" nzTheme="outline"></i>New
   </button>
 
-  <section class="container mx-auto max-w-7xl">
+  <section class="">
     <section class="">
       <nz-table
         nzShowSizeChanger
@@ -20,9 +20,10 @@
         [nzPageSize]="pageSize"
         [nzPageIndex]="pageIndex"
         (nzQueryParams)="onQueryParamsChange($event)"
-        nzSize="default"
+        nzSize="middle"
         nzPaginationPosition="bottom"
         nzTableLayout="fixed"
+        [nzWidthConfig]="['60px', '130px', '130px']"
       >
         <thead>
           <tr>
@@ -30,18 +31,45 @@
             <th nzColumnKey="productName" [nzSortFn]="true" nzCustomFilter>
               Name
               <nz-filter-trigger
-                [(nzVisible)]="visible"
-                [nzActive]="searchValue.length > 0"
-                [nzDropdownMenu]="menu"
-                (click)="focusOnSearchInput()"
+                [(nzVisible)]="columnFilter.productName.visible"
+                [nzDropdownMenu]="menuFilterName"
               >
                 <i nz-icon nzType="search"></i>
               </nz-filter-trigger>
             </th>
-            <th nzColumnKey="productCode" [nzSortFn]="true">Code</th>
-            <th nzColumnKey="productPriceIn" [nzSortFn]="true">PriceIn</th>
-            <th nzColumnKey="productPriceOut" [nzSortFn]="true">PriceOut</th>
+
+            <th nzColumnKey="productCode" [nzSortFn]="true" nzCustomFilter>
+              Code
+              <nz-filter-trigger
+                [(nzVisible)]="columnFilter.productCode.visible"
+                [nzDropdownMenu]="menuFilterCode"
+              >
+                <i nz-icon nzType="search"></i>
+              </nz-filter-trigger>
+            </th>
+
+            <th nzColumnKey="productPriceIn" [nzSortFn]="true" nzCustomFilter>
+              PriceIn
+              <nz-filter-trigger
+                [(nzVisible)]="columnFilter.productPriceIn.visible"
+                [nzDropdownMenu]="menuFilterPriceIn"
+              >
+                <i nz-icon nzType="filter"></i>
+              </nz-filter-trigger>
+            </th>
+
+            <th nzColumnKey="productPriceOut" [nzSortFn]="true" nzCustomFilter>
+              PriceOut
+              <nz-filter-trigger
+                [(nzVisible)]="columnFilter.productPriceOut.visible"
+                [nzDropdownMenu]="menuFilterPriceOut"
+              >
+                <i nz-icon nzType="filter"></i>
+              </nz-filter-trigger>
+            </th>
+
             <th nzColumnKey="quantity">Quantity</th>
+
             <th nzColumnKey="note">Note</th>
           </tr>
         </thead>
@@ -64,29 +92,121 @@
     </section>
   </section>
 
-  <nz-dropdown-menu #menu="nzDropdownMenu">
-    <div class="ant-table-filter-dropdown">
-      <div class="search-box">
-        <input
-          type="text"
-          nz-input
-          placeholder="Search name"
-          [(ngModel)]="searchValue"
-          (keydown.enter)="search()"
-          #searchInput
-          autofocus
-        />
-        <button
-          nz-button
-          nzSize="small"
-          nzType="primary"
-          (click)="search()"
-          class="search-button"
-        >
-          Search
-        </button>
-        <button nz-button nzSize="small" (click)="reset()">Reset</button>
+  <section>
+    <!--  Menu Filter Name  -->
+    <nz-dropdown-menu #menuFilterName="nzDropdownMenu">
+      <div class="ant-table-filter-dropdown">
+        <div class="search-box">
+          <input
+            type="text"
+            nz-input
+            placeholder="Search name"
+            [(ngModel)]="columnFilter.productName.productName"
+            (keydown.enter)="filterColumns()"
+            autofocus
+          />
+          <button
+            nz-button
+            nzSize="small"
+            nzType="primary"
+            (click)="filterColumns()"
+            class="search-button"
+          >
+            Search
+          </button>
+          <button nz-button nzSize="small" (click)="reset()">Reset</button>
+        </div>
       </div>
-    </div>
-  </nz-dropdown-menu>
+    </nz-dropdown-menu>
+
+    <!--  Menu Filter Code  -->
+    <nz-dropdown-menu #menuFilterCode="nzDropdownMenu">
+      <div class="ant-table-filter-dropdown">
+        <div class="search-box">
+          <input
+            type="text"
+            nz-input
+            placeholder="Search code"
+            [(ngModel)]="columnFilter.productCode.productCode"
+            (keydown.enter)="filterColumns()"
+            autofocus
+          />
+          <button
+            nz-button
+            nzSize="small"
+            nzType="primary"
+            (click)="filterColumns()"
+            class="search-button"
+          >
+            Search
+          </button>
+          <button nz-button nzSize="small" (click)="reset()">Reset</button>
+        </div>
+      </div>
+    </nz-dropdown-menu>
+
+    <!--  Menu Filter Price In  -->
+    <nz-dropdown-menu #menuFilterPriceIn="nzDropdownMenu">
+      <div class="ant-table-filter-dropdown">
+        <div class="search-box">
+          <input
+            type="number"
+            nz-input
+            placeholder="Price in from"
+            [(ngModel)]="columnFilter.productPriceIn.productPriceInFrom"
+            (keydown.enter)="filterColumns()"
+          />
+          <input
+            type="number"
+            nz-input
+            placeholder="Price in to"
+            [(ngModel)]="columnFilter.productPriceIn.productPriceInTo"
+            (keydown.enter)="filterColumns()"
+          />
+          <button
+            nz-button
+            nzSize="small"
+            nzType="primary"
+            (click)="filterColumns()"
+            class="search-button"
+          >
+            Search
+          </button>
+          <button nz-button nzSize="small" (click)="reset()">Reset</button>
+        </div>
+      </div>
+    </nz-dropdown-menu>
+
+    <!--  Menu Filter Price In  -->
+    <nz-dropdown-menu #menuFilterPriceOut="nzDropdownMenu">
+      <div class="ant-table-filter-dropdown">
+        <div class="search-box">
+          <input
+            type="number"
+            nz-input
+            placeholder="Price out from"
+            [(ngModel)]="columnFilter.productPriceOut.productPriceOutFrom"
+            (keydown.enter)="filterColumns()"
+          />
+          <input
+            type="number"
+            nz-input
+            placeholder="Price out to"
+            [(ngModel)]="columnFilter.productPriceOut.productPriceOutTo"
+            (keydown.enter)="filterColumns()"
+          />
+          <button
+            nz-button
+            nzSize="small"
+            nzType="primary"
+            (click)="filterColumns()"
+            class="search-button"
+          >
+            Search
+          </button>
+          <button nz-button nzSize="small" (click)="reset()">Reset</button>
+        </div>
+      </div>
+    </nz-dropdown-menu>
+  </section>
 </section>

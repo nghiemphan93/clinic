@@ -25,31 +25,38 @@ export class UserService {
   ): Observable<BaseResponse<User>> {
     let params = new HttpParams();
     if (page) {
-      params = params.append(
-        nameof<BasePage>('pageSize'),
-        page.pageSize.toString()
-      );
-      params = params.append(
-        nameof<BasePage>('pageNumber'),
-        page.pageNumber.toString()
-      );
-      params = params.append(nameof<BasePage>('sortBy'), page.sortBy);
-      params = params.append(
-        nameof<BasePage>('sortDirection'),
-        page.sortDirection
-      );
+      params = page.pageSize
+        ? params.append(nameof<BasePage>('pageSize'), page.pageSize.toString())
+        : params;
+      params = page.pageNumber
+        ? params.append(
+            nameof<BasePage>('pageNumber'),
+            page.pageNumber.toString()
+          )
+        : params;
+      params = page.sortBy
+        ? params.append(nameof<BasePage>('sortBy'), page.sortBy)
+        : params;
+      params = page.sortDirection
+        ? params.append(nameof<BasePage>('sortDirection'), page.sortDirection)
+        : params;
     }
 
     if (searchCriteria) {
-      params = params.append(
-        nameof<UserSearchCriteria>('email'),
-        searchCriteria.email
-      );
-      params = params.append(
-        nameof<UserSearchCriteria>('username'),
-        searchCriteria.username
-      );
+      params = searchCriteria.email
+        ? params.append(
+            nameof<UserSearchCriteria>('email'),
+            searchCriteria.email
+          )
+        : params;
+      params = searchCriteria.username
+        ? params.append(
+            nameof<UserSearchCriteria>('username'),
+            searchCriteria.username
+          )
+        : params;
     }
+    console.log(params);
     return this.http.get<BaseResponse<User>>(this.baseUrl, {
       params: params,
     });

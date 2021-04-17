@@ -92,7 +92,7 @@
           >
             <nz-option
               *ngFor="let role of roles$ | async"
-              [nzLabel]="role.role"
+              [nzLabel]="role?.role?.toString()"
               [nzValue]="role"
             >
               clgt

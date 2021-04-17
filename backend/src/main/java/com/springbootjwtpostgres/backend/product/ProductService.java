@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 @AllArgsConstructor
 public class ProductService {
@@ -24,6 +26,8 @@ public class ProductService {
     }
 
     public Product create(Product newEntity) {
+        newEntity.setCreatedAt(new Date());
+        newEntity.getInventory().setCreatedAt(new Date());
         return this.repo.save(newEntity);
     }
 
@@ -35,6 +39,7 @@ public class ProductService {
         oldEntity.setProductPriceIn(updatedEntity.getProductPriceIn());
         oldEntity.setProductPriceOut(updatedEntity.getProductPriceOut());
         oldEntity.setNote(updatedEntity.getNote());
+        oldEntity.getInventory().setCurrentQuantity(updatedEntity.getInventory().getCurrentQuantity());
         return this.repo.save(oldEntity);
     }
 

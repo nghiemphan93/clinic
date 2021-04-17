@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 
 @Entity
@@ -16,9 +17,13 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 public class Bill extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private OrderType billType;
     private OrderStatus billStatus;
     private double billTotalPrice;
+    private Date createdAt;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")

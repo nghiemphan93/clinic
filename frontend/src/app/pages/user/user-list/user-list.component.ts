@@ -50,6 +50,8 @@ export class UserListComponent implements OnInit, OnDestroy {
         this.loading = false;
         this.total = data.totalElements;
         this.users = data.content;
+
+        console.log(data);
       })
     );
   }
@@ -60,15 +62,18 @@ export class UserListComponent implements OnInit, OnDestroy {
     const sortBy = (currentSort && currentSort.key) || 'createdAt';
     const sortDirection = (currentSort && currentSort.value) || 'ascend';
 
-    this.loadDataFromServer(
-      new BasePage(
-        pageIndex - 1,
-        pageSize,
-        sortDirection === 'ascend' ? SortEDirection.ASC : SortEDirection.DESC,
-        sortBy
-      ),
-      new UserSearchCriteria(this.searchValue, this.searchValue)
-    );
+    const page = new BasePage();
+    page.pageNumber = pageIndex - 1;
+    page.pageSize = pageSize;
+    page.sortDirection =
+      sortDirection === 'ascend' ? SortEDirection.ASC : SortEDirection.DESC;
+    page.sortBy = sortBy;
+
+    const searchCriteria = new UserSearchCriteria();
+    searchCriteria.username = this.searchValue;
+    searchCriteria.email = this.searchValue;
+
+    this.loadDataFromServer(page, searchCriteria);
   }
 
   reset(): void {
@@ -78,10 +83,13 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   search(): void {
     this.visible = false;
-    this.loadDataFromServer(
-      new BasePage(),
-      new UserSearchCriteria(this.searchValue, this.searchValue)
-    );
+
+    const page = new BasePage();
+    const searchCriteria = new UserSearchCriteria();
+    searchCriteria.username = this.searchValue;
+    searchCriteria.email = this.searchValue;
+
+    this.loadDataFromServer(page, searchCriteria);
   }
 
   focusOnSearchInput() {

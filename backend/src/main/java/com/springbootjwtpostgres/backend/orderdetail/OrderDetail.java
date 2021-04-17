@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 
 @Entity
@@ -15,8 +16,12 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 public class OrderDetail extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private int quantity;
     private double totalPricePerProduct;
+    private Date createdAt;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")

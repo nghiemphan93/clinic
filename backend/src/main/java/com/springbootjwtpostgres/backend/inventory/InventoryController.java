@@ -5,6 +5,7 @@ import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,11 +14,11 @@ import org.springframework.web.bind.annotation.*;
 public class InventoryController {
     private final InventoryService service;
 
-    @GetMapping
-    public ResponseEntity<BaseEntity> getOne(@PathVariable Long productId)
+    @GetMapping("/{inventoryId}")
+    public ResponseEntity<BaseEntity> getOne(@PathVariable Long productId, @PathVariable Long inventoryId)
             throws NotFoundException {
         return new ResponseEntity<>(
-                this.service.getOne(productId),
+                this.service.getOne(productId, inventoryId),
                 HttpStatus.OK
         );
     }
@@ -31,18 +32,19 @@ public class InventoryController {
         );
     }
 
-    @PutMapping
+    @PutMapping("/{inventoryId}")
     public ResponseEntity<BaseEntity> update(@RequestBody Inventory updatedEntity,
-                                             @PathVariable Long productId)
+                                             @PathVariable Long productId,
+                                             @PathVariable Long inventoryId)
             throws NotFoundException {
         return new ResponseEntity<>(
-                this.service.update(updatedEntity, productId),
+                this.service.update(updatedEntity, productId, inventoryId),
                 HttpStatus.OK
         );
     }
 
-    @DeleteMapping
-    public void delete(@PathVariable Long productId) throws NotFoundException {
-        this.service.delete(productId);
+    @DeleteMapping("/{inventoryId}")
+    public void delete(@PathVariable Long productId, @PathVariable Long inventoryId) throws NotFoundException {
+        this.service.delete(productId, inventoryId);
     }
 }

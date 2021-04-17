@@ -24,59 +24,82 @@ export class ProductService {
   ): Observable<BaseResponse<Product>> {
     let params = new HttpParams();
     if (page) {
-      params = params.append(
-        nameof<BasePage>('pageSize'),
-        page.pageSize.toString()
-      );
-      params = params.append(
-        nameof<BasePage>('pageNumber'),
-        page.pageNumber.toString()
-      );
-      params = params.append(nameof<BasePage>('sortBy'), page.sortBy);
-      params = params.append(
-        nameof<BasePage>('sortDirection'),
-        page.sortDirection
-      );
+      page.pageSize
+        ? (params = params.append(
+            nameof<BasePage>('pageSize'),
+            page.pageSize.toString()
+          ))
+        : params;
+      params = page.pageNumber
+        ? params.append(
+            nameof<BasePage>('pageNumber'),
+            page.pageNumber.toString()
+          )
+        : params;
+      params = page.sortBy
+        ? params.append(nameof<BasePage>('sortBy'), page.sortBy)
+        : params;
+      params = page.sortDirection
+        ? params.append(nameof<BasePage>('sortDirection'), page.sortDirection)
+        : params;
     }
 
     if (searchCriteria) {
-      params = params.append(
-        nameof<ProductSearchCriteria>('note'),
-        searchCriteria.note
-      );
-      params = params.append(
-        nameof<ProductSearchCriteria>('productCode'),
-        searchCriteria.productCode
-      );
-      params = params.append(
-        nameof<ProductSearchCriteria>('productName'),
-        searchCriteria.productName
-      );
-      params = params.append(
-        nameof<ProductSearchCriteria>('productPriceInFrom'),
-        searchCriteria.productPriceInFrom.toString()
-      );
-      params = params.append(
-        nameof<ProductSearchCriteria>('productPriceInTo'),
-        searchCriteria.productPriceInTo.toString()
-      );
-      params = params.append(
-        nameof<ProductSearchCriteria>('productPriceOutFrom'),
-        searchCriteria.productPriceOutFrom.toString()
-      );
-      params = params.append(
-        nameof<ProductSearchCriteria>('productPriceOutTo'),
-        searchCriteria.productPriceOutTo.toString()
-      );
+      params = searchCriteria.note
+        ? params.append(
+            nameof<ProductSearchCriteria>('note'),
+            searchCriteria.note
+          )
+        : params;
+      params = searchCriteria.productCode
+        ? params.append(
+            nameof<ProductSearchCriteria>('productCode'),
+            searchCriteria.productCode
+          )
+        : params;
+      params = searchCriteria.productName
+        ? params.append(
+            nameof<ProductSearchCriteria>('productName'),
+            searchCriteria.productName
+          )
+        : params;
+      params = searchCriteria.productPriceInFrom
+        ? params.append(
+            nameof<ProductSearchCriteria>('productPriceInFrom'),
+            searchCriteria.productPriceInFrom.toString()
+          )
+        : params;
+      params = searchCriteria.productPriceInTo
+        ? params.append(
+            nameof<ProductSearchCriteria>('productPriceInTo'),
+            searchCriteria.productPriceInTo.toString()
+          )
+        : params;
+      params = searchCriteria.productPriceOutFrom
+        ? params.append(
+            nameof<ProductSearchCriteria>('productPriceOutFrom'),
+            searchCriteria.productPriceOutFrom.toString()
+          )
+        : params;
+      params = searchCriteria.productPriceOutTo
+        ? params.append(
+            nameof<ProductSearchCriteria>('productPriceOutTo'),
+            searchCriteria.productPriceOutTo.toString()
+          )
+        : params;
 
-      params = params.append(
-        nameof<ProductSearchCriteria>('createdAtFrom'),
-        searchCriteria.createdAtFrom.toDateString()
-      );
-      params = params.append(
-        nameof<ProductSearchCriteria>('createdAtTo'),
-        searchCriteria.createdAtTo.toDateString()
-      );
+      params = searchCriteria.createdAtFrom
+        ? params.append(
+            nameof<ProductSearchCriteria>('createdAtFrom'),
+            searchCriteria.createdAtFrom.toDateString()
+          )
+        : params;
+      params = searchCriteria.createdAtTo
+        ? params.append(
+            nameof<ProductSearchCriteria>('createdAtTo'),
+            searchCriteria.createdAtTo.toDateString()
+          )
+        : params;
     }
     return this.http.get<BaseResponse<Product>>(this.baseUrl, {
       params: params,

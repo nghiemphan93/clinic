@@ -5,8 +5,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.Date;
 
 
 @Entity
@@ -14,8 +14,12 @@ import javax.persistence.ManyToOne;
 @Data
 @NoArgsConstructor
 public class InventoryStats extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private Long beforeQuantity;
     private Long afterQuantity;
+    private Date createdAt;
 
     @ManyToOne
     private Inventory inventory;

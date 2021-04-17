@@ -66,7 +66,11 @@ export class UserCreateComponent implements OnInit, OnDestroy {
     switch (url[url.length - 1]) {
       case 'create':
         this.isCreated = true;
-        this.user = new User('', '', [new Role(ERole.ROLE_NURSE)]);
+        const newUser = new User();
+        newUser.username = '';
+        newUser.email = '';
+        newUser.roles = [new Role(ERole.ROLE_NURSE)];
+        this.user = newUser;
         this.prepareFormCreate();
         break;
       case 'edit':

@@ -5,8 +5,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Date;
 
 
 @Entity
@@ -15,8 +15,12 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Table(name = "orders")
 public class Order extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private OrderType orderType;
     private OrderStatus orderStatus;
     private double orderTotalPrice;
+    private Date createdAt;
 }
 

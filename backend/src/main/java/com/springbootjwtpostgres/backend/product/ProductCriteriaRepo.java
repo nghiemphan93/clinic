@@ -46,22 +46,22 @@ public class ProductCriteriaRepo {
         if (Objects.nonNull(searchCriteria.getProductName())) {
             predicates.add(
                     this.criteriaBuilder.like(
-                            reportRoot.get(Product_.PRODUCT_NAME),
-                            "%" + searchCriteria.getProductName() + "%")
+                            this.criteriaBuilder.upper(reportRoot.get(Product_.PRODUCT_NAME)),
+                            "%" + searchCriteria.getProductName().toUpperCase() + "%")
             );
         }
         if (Objects.nonNull(searchCriteria.getProductCode())) {
             predicates.add(
                     this.criteriaBuilder.like(
-                            reportRoot.get(Product_.PRODUCT_CODE),
-                            "%" + searchCriteria.getProductCode() + "%")
+                            this.criteriaBuilder.upper(reportRoot.get(Product_.PRODUCT_CODE)),
+                            "%" + searchCriteria.getProductCode().toUpperCase() + "%")
             );
         }
         if (Objects.nonNull(searchCriteria.getNote())) {
             predicates.add(
                     this.criteriaBuilder.like(
-                            reportRoot.get(Product_.NOTE),
-                            "%" + searchCriteria.getNote() + "%")
+                            this.criteriaBuilder.upper(reportRoot.get(Product_.NOTE)),
+                            "%" + searchCriteria.getNote().toUpperCase() + "%")
             );
         }
         if (searchCriteria.getProductPriceInTo() > searchCriteria.getProductPriceInFrom()) {

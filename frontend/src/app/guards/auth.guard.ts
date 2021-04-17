@@ -42,7 +42,8 @@ export class AuthGuard implements CanActivate {
     let hasRole = false;
     requiredRoles.forEach((requiredRole: ERole) => {
       if (
-        currentUser.roles.findIndex((role) => role.role === requiredRole) !== -1
+        currentUser?.roles?.findIndex((role) => role.role === requiredRole) !==
+        -1
       ) {
         hasRole = true;
       }

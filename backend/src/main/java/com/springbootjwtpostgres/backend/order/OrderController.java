@@ -24,7 +24,7 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BaseEntity> getOne(@PathVariable Long id) throws NotFoundException {
+    public ResponseEntity<Order> getOne(@PathVariable Long id) throws NotFoundException {
         return new ResponseEntity<>(
                 this.service.getOne(id),
                 HttpStatus.OK
@@ -32,7 +32,7 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<BaseEntity> create(@RequestBody Order newEntity) {
+    public ResponseEntity<Order> create(@RequestBody Order newEntity) {
         return new ResponseEntity<>(
                 this.service.create(newEntity),
                 HttpStatus.OK
@@ -40,8 +40,8 @@ public class OrderController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BaseEntity> update(@PathVariable Long id,
-                                             @RequestBody Order updatedEntity)
+    public ResponseEntity<Order> update(@PathVariable Long id,
+                                        @RequestBody Order updatedEntity)
             throws NotFoundException {
         return new ResponseEntity<>(
                 this.service.update(id, updatedEntity),

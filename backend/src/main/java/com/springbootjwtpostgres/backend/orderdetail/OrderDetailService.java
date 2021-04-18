@@ -22,16 +22,16 @@ public class OrderDetailService {
         return this.criteriaRepo.findAllWithFilters(page, searchCriteria);
     }
 
-    public BaseEntity getOne(Long orderDetailId) throws NotFoundException {
+    public OrderDetail getOne(Long orderDetailId) throws NotFoundException {
         return this.repo.findById(orderDetailId)
                 .orElseThrow(() -> new NotFoundException(OrderDetail.class.getSimpleName() + " not found"));
     }
 
-    public BaseEntity create(OrderDetail newEntity) {
+    public OrderDetail create(OrderDetail newEntity) {
         return this.repo.save(newEntity);
     }
 
-    public BaseEntity update(
+    public OrderDetail update(
             Long orderDetailId,
             OrderDetail updatedEntity) throws NotFoundException {
         OrderDetail oldEntity = this.repo.findById(orderDetailId)
@@ -45,5 +45,18 @@ public class OrderDetailService {
 
     public void delete(Long id) {
         this.repo.deleteById(id);
+    }
+
+    public double calTotalPricePerProduct(Order order, OrderDetail orderDetail) {
+        double totalPricePerProduct = 0;
+        switch (order.getOrderType()) {
+            case BUY:
+                totalPricePerProduct = orderDetail.getProduct().getProductPriceIn() * orderDetail.getQuantity();
+                break;
+            case SELL:
+                totalPricePerProduct = orderDetail.getProduct().getProductPriceOut() * orderDetail.getQuantity();
+                break;
+        }
+        return totalPricePerProduct;
     }
 }

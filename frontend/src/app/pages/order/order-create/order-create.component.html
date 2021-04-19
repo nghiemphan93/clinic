@@ -1,1 +1,133 @@
-<p>order-create works!</p>
+<section
+  *ngIf="!order"
+  class="text-center w-full h-full flex justify-center items-center"
+>
+  <nz-spin nzSize="large" nzSimple></nz-spin>
+</section>
+
+<section *ngIf="order">
+  <nz-button-group class="flex justify-center mt-28 mb-5">
+    <button
+      class="flex justify-center items-center"
+      nz-button
+      nzType="default"
+      routerLink="/orders"
+    >
+      <i nz-icon nzType="left" nzTheme="outline"></i>
+      Back
+    </button>
+    <button
+      *ngIf="isUpdated"
+      nz-button
+      nzType="primary"
+      routerLink="/orders/{{ orderId }}"
+    >
+      Detail
+    </button>
+    <button
+      *ngIf="isDetailed"
+      nz-button
+      nzType="primary"
+      routerLink="/orders/{{ orderId }}/edit"
+    >
+      Edit
+    </button>
+    <button
+      *ngIf="!isCreated"
+      nz-button
+      nzType="primary"
+      nzDanger
+      nz-popconfirm
+      nzPopconfirmTitle="Still delete!!!"
+      (nzOnConfirm)="delete()"
+      nzPopconfirmPlacement="bottom"
+      [nzLoading]="isLoading"
+      nzShape="round"
+    >
+      Delete
+    </button>
+  </nz-button-group>
+
+  <section class="flex justify-center items-center">
+    <form
+      nz-form
+      [formGroup]="validateForm"
+      (ngSubmit)="submitForm()"
+      class="w-72"
+    >
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Please select order type!">
+          <nz-input-group
+            *ngIf="isDetailed"
+            nzPrefixIcon="export"
+            class="mb-1.4"
+          >
+            <input
+              type="text"
+              nz-input
+              formControlName="orderType"
+              placeholder="order Name"
+            />
+          </nz-input-group>
+
+          <nz-select
+            *ngIf="isCreated || isUpdated"
+            nzShowSearch
+            nzAllowClear
+            nzPlaceHolder="Select Order Type"
+            formControlName="orderType"
+            nzSuffixIcon="export"
+          >
+            <nz-option
+              *ngFor="let orderType of orderTypes"
+              [nzLabel]="orderType"
+              [nzValue]="orderType"
+            ></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Please select order status!">
+          <nz-input-group
+            *ngIf="isDetailed"
+            nzPrefixIcon="schedule"
+            class="mb-1.4"
+          >
+            <input
+              type="text"
+              nz-input
+              formControlName="orderStatus"
+              placeholder="Order Status"
+            />
+          </nz-input-group>
+
+          <nz-select
+            *ngIf="isCreated || isUpdated"
+            nzShowSearch
+            nzAllowClear
+            nzPlaceHolder="Select Order Status"
+            formControlName="orderStatus"
+            nzSuffixIcon="schedule"
+          >
+            <nz-option
+              *ngFor="let orderStatus of orderStatuses"
+              [nzLabel]="orderStatus"
+              [nzValue]="orderStatus"
+            ></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <button
+        *ngIf="isCreated || isUpdated"
+        [nzLoading]="isLoading"
+        nz-button
+        nzBlock
+        [nzType]="'primary'"
+      >
+        Submit
+      </button>
+    </form>
+  </section>
+</section>

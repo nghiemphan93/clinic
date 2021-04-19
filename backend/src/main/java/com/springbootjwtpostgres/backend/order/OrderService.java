@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -26,6 +27,8 @@ public class OrderService {
     }
 
     public Order create(Order newEntity) {
+        newEntity.setOrderTotalPrice(0);
+        newEntity.setCreatedAt(new Date());
         return this.repo.save(newEntity);
     }
 

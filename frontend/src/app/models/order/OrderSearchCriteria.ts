@@ -2,8 +2,8 @@ import { EOrderType } from './EOrderType';
 import { EOrderStatus } from './EOrderStatus';
 
 export class OrderSearchCriteria {
-  orderType?: EOrderType;
-  orderStatus?: EOrderStatus;
+  orderTypes?: EOrderType[];
+  orderStatuses?: EOrderStatus[];
   orderTotalPriceFrom?: number;
   orderTotalPriceTo?: number;
   createdAtFrom?: Date;

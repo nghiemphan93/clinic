@@ -1,4 +1,4 @@
 export enum EOrderType {
   BUY = 'BUY',
-  SELL = 'SELl',
+  SELL = 'SELL',
 }

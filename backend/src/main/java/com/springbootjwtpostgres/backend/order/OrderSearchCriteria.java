@@ -3,11 +3,12 @@ package com.springbootjwtpostgres.backend.order;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class OrderSearchCriteria {
-    private OrderType orderType;
-    private OrderStatus orderStatus;
+    private List<OrderType> orderTypes;
+    private List<OrderStatus> orderStatuses;
     private double orderTotalPriceFrom;
     private double orderTotalPriceTo;
     private Date createdAtFrom;

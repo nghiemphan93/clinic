@@ -24,46 +24,67 @@ export class OrderService {
   ): Observable<BaseResponse<Order>> {
     let params = new HttpParams();
     if (page) {
-      params = params.append(
-        nameof<BasePage>('pageSize'),
-        page.pageSize.toString()
-      );
-      params = params.append(
-        nameof<BasePage>('pageNumber'),
-        page.pageNumber.toString()
-      );
-      params = params.append(nameof<BasePage>('sortBy'), page.sortBy);
-      params = params.append(
-        nameof<BasePage>('sortDirection'),
-        page.sortDirection
-      );
+      page.pageSize
+        ? (params = params.append(
+            nameof<BasePage>('pageSize'),
+            page.pageSize.toString()
+          ))
+        : params;
+      params = page.pageNumber
+        ? params.append(
+            nameof<BasePage>('pageNumber'),
+            page.pageNumber.toString()
+          )
+        : params;
+      params = page.sortBy
+        ? params.append(nameof<BasePage>('sortBy'), page.sortBy)
+        : params;
+      params = page.sortDirection
+        ? params.append(nameof<BasePage>('sortDirection'), page.sortDirection)
+        : params;
     }
 
     if (searchCriteria) {
-      params = params.append(
-        nameof<OrderSearchCriteria>('orderStatus'),
-        searchCriteria.orderStatus
-      );
-      params = params.append(
-        nameof<OrderSearchCriteria>('orderType'),
-        searchCriteria.orderType
-      );
-      params = params.append(
-        nameof<OrderSearchCriteria>('orderTotalPriceFrom'),
-        searchCriteria.orderTotalPriceFrom.toString()
-      );
-      params = params.append(
-        nameof<OrderSearchCriteria>('orderTotalPriceTo'),
-        searchCriteria.orderTotalPriceTo.toString()
-      );
-      params = params.append(
-        nameof<OrderSearchCriteria>('createdAtFrom'),
-        searchCriteria.createdAtFrom.toDateString()
-      );
-      params = params.append(
-        nameof<OrderSearchCriteria>('createdAtTo'),
-        searchCriteria.createdAtTo.toDateString()
-      );
+      if (searchCriteria.orderStatuses) {
+        searchCriteria.orderStatuses.forEach((orderStatus) => {
+          params = params.append(
+            nameof<OrderSearchCriteria>('orderStatuses'),
+            orderStatus
+          );
+        });
+      }
+      if (searchCriteria.orderTypes) {
+        searchCriteria.orderTypes.forEach((orderType) => {
+          params = params.append(
+            nameof<OrderSearchCriteria>('orderTypes'),
+            orderType
+          );
+        });
+      }
+      params = searchCriteria.orderTotalPriceFrom
+        ? params.append(
+            nameof<OrderSearchCriteria>('orderTotalPriceFrom'),
+            searchCriteria.orderTotalPriceFrom.toString()
+          )
+        : params;
+      params = searchCriteria.orderTotalPriceTo
+        ? params.append(
+            nameof<OrderSearchCriteria>('orderTotalPriceTo'),
+            searchCriteria.orderTotalPriceTo.toString()
+          )
+        : params;
+      params = searchCriteria.createdAtFrom
+        ? params.append(
+            nameof<OrderSearchCriteria>('createdAtFrom'),
+            searchCriteria.createdAtFrom.toDateString()
+          )
+        : params;
+      params = searchCriteria.createdAtTo
+        ? params.append(
+            nameof<OrderSearchCriteria>('createdAtTo'),
+            searchCriteria.createdAtTo.toDateString()
+          )
+        : params;
     }
     return this.http.get<BaseResponse<Order>>(this.baseUrl, {
       params: params,

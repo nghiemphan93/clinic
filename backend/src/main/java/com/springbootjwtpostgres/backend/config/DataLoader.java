@@ -98,9 +98,9 @@ public class DataLoader implements ApplicationRunner {
                 Order order = this.createOrder();
                 this.createBill(order);
             }
+            logger.info("created orders...");
+            logger.info("created bills...");
         }
-        logger.info("created orders...");
-        logger.info("created bills...");
     }
 
     private Order createOrder() throws NotFoundException {

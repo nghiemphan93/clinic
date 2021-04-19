@@ -42,26 +42,44 @@ public class OrderCriteriaRepo {
     }
 
     private Predicate getPredicate(OrderSearchCriteria searchCriteria,
-                                   Root<Order> reportRoot) {
+                                   Root<Order> root) {
         List<Predicate> predicates = new ArrayList<>();
-        if (Objects.nonNull(searchCriteria.getOrderType())) {
+        if (Objects.nonNull(searchCriteria.getOrderTypes())) {
+            List<Predicate> partPredicates = new ArrayList<>();
+            searchCriteria.getOrderTypes().forEach(orderType ->
+                    partPredicates.add(
+                            this.criteriaBuilder.equal(
+                                    root.get(Order_.ORDER_TYPE),
+                                    orderType
+                            )
+                    ));
             predicates.add(
-                    this.criteriaBuilder.equal(
-                            reportRoot.get(Order_.ORDER_TYPE),
-                            searchCriteria.getOrderType())
+                    this.criteriaBuilder
+                            .or(partPredicates.toArray(
+                                    new Predicate[0]
+                            ))
             );
         }
-        if (Objects.nonNull(searchCriteria.getOrderStatus())) {
+        if (Objects.nonNull(searchCriteria.getOrderStatuses())) {
+            List<Predicate> partPredicates = new ArrayList<>();
+            searchCriteria.getOrderStatuses().forEach(orderStatus ->
+                    partPredicates.add(
+                            this.criteriaBuilder.equal(
+                                    root.get(Order_.ORDER_STATUS),
+                                    orderStatus
+                            )
+                    ));
             predicates.add(
-                    this.criteriaBuilder.equal(
-                            reportRoot.get(Order_.ORDER_STATUS),
-                            searchCriteria.getOrderStatus())
+                    this.criteriaBuilder
+                            .or(partPredicates.toArray(
+                                    new Predicate[0]
+                            ))
             );
         }
         if (searchCriteria.getOrderTotalPriceTo() > searchCriteria.getOrderTotalPriceFrom()) {
             predicates.add(
                     this.criteriaBuilder.between(
-                            reportRoot.get(Order_.ORDER_TOTAL_PRICE),
+                            root.get(Order_.ORDER_TOTAL_PRICE),
                             searchCriteria.getOrderTotalPriceFrom(),
                             searchCriteria.getOrderTotalPriceTo()
                     )
@@ -73,7 +91,7 @@ public class OrderCriteriaRepo {
         ) {
             predicates.add(
                     this.criteriaBuilder.between(
-                            reportRoot.get(Order_.CREATED_AT),
+                            root.get(Order_.CREATED_AT),
                             searchCriteria.getCreatedAtFrom(),
                             searchCriteria.getCreatedAtTo()
                     )

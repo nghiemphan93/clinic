@@ -25,7 +25,8 @@ public class OrderDetailCriteriaRepo {
     }
 
     public Page<OrderDetail> findAllWithFilters(BasePage page,
-                                                OrderDetailSearchCriteria searchCriteria) {
+                                                OrderDetailSearchCriteria searchCriteria,
+                                                Long orderId) {
         CriteriaQuery<OrderDetail> criteriaQuery = this.criteriaBuilder.createQuery(OrderDetail.class);
         Root<OrderDetail> root = criteriaQuery.from(OrderDetail.class);
         Predicate predicate = this.getPredicate(searchCriteria, root);

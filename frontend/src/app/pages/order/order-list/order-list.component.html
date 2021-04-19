@@ -65,12 +65,14 @@
                 <i nz-icon nzType="filter"></i>
               </nz-filter-trigger>
             </th>
+
+            <th nzColumnKey="edit">Edit</th>
           </tr>
         </thead>
         <tbody>
           <tr
             *ngFor="let order of orders"
-            routerLink="/orders/{{ order?.id }}"
+            routerLink="/orders/{{ order?.id }}/orderDetails"
             class="cursor-pointer"
           >
             <td>{{ order?.id }}</td>
@@ -78,6 +80,9 @@
             <td>{{ order?.orderType }}</td>
             <td>{{ order?.orderStatus }}</td>
             <td>{{ order?.orderTotalPrice | number: "1.0-0" }}{{ " đ" }}</td>
+            <td routerLink="/orders/{{ order?.id }}/edit">
+              <i nz-icon nzType="edit" nzTheme="outline"></i>
+            </td>
           </tr>
         </tbody>
       </nz-table>

@@ -6,13 +6,44 @@ import { OrderEditComponent } from './order-edit/order-edit.component';
 import { OrderDetailComponent } from './order-detail/order-detail.component';
 import { OrderCreateComponent } from './order-create/order-create.component';
 import { OrderListComponent } from './order-list/order-list.component';
-
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
 @NgModule({
-  declarations: [OrderEditComponent, OrderDetailComponent, OrderCreateComponent, OrderListComponent],
+  declarations: [
+    OrderEditComponent,
+    OrderDetailComponent,
+    OrderCreateComponent,
+    OrderListComponent,
+  ],
   imports: [
     CommonModule,
-    OrderRoutingModule
-  ]
+    OrderRoutingModule,
+    NzTypographyModule,
+    NzTableModule,
+    NzDropDownModule,
+    FormsModule,
+    NzButtonModule,
+    NzIconModule,
+    NzInputModule,
+    ReactiveFormsModule,
+    NzFormModule,
+    NzSelectModule,
+    NzPopconfirmModule,
+    NzSpinModule,
+    NzDatePickerModule,
+    NzCheckboxModule,
+  ],
 })
-export class OrderModule { }
+export class OrderModule {}

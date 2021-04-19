@@ -1,1 +1,216 @@
-<p>order-list works!</p>
+<section class="container mx-auto max-w-2xl">
+  <h2 class="text-center" nz-typography>Products</h2>
+  <button
+    class="flex justify-center items-center mb-3"
+    nz-button
+    nzType="primary"
+    routerLink="/products/create"
+  >
+    <i nz-icon nzType="plus" nzTheme="outline"></i>New
+  </button>
+
+  <section>
+    <section>
+      <nz-table
+        nzShowSizeChanger
+        [nzData]="orders"
+        [nzFrontPagination]="false"
+        [nzLoading]="loading"
+        [nzTotal]="total"
+        [nzPageSize]="pageSize"
+        [nzPageIndex]="pageIndex"
+        (nzQueryParams)="onQueryParamsChange($event)"
+        nzSize="middle"
+        nzPaginationPosition="bottom"
+        nzTableLayout="fixed"
+        [nzWidthConfig]="['60px', '130px', '130px']"
+      >
+        <thead>
+          <tr>
+            <th nzColumnKey="id" [nzSortFn]="true">Id</th>
+            <th nzColumnKey="createdAt" [nzSortFn]="true" nzCustomFilter>
+              Date
+              <nz-filter-trigger
+                [(nzVisible)]="columnFilter.createdAt.visible"
+                [nzDropdownMenu]="menuFilterCreatedAt"
+              >
+                <i nz-icon nzType="filter"></i>
+              </nz-filter-trigger>
+            </th>
+            <th nzColumnKey="orderType" [nzSortFn]="true" nzCustomFilter>
+              OrderType
+              <nz-filter-trigger
+                [(nzVisible)]="columnFilter.orderType.visible"
+                [nzDropdownMenu]="menuFilterType"
+              >
+                <i nz-icon nzType="filter"></i>
+              </nz-filter-trigger>
+            </th>
+            <th nzColumnKey="orderStatus" [nzSortFn]="true" nzCustomFilter>
+              OrderStatus
+              <nz-filter-trigger
+                [(nzVisible)]="columnFilter.orderStatus.visible"
+                [nzDropdownMenu]="menuFilterStatus"
+              >
+                <i nz-icon nzType="filter"></i>
+              </nz-filter-trigger>
+            </th>
+
+            <th nzColumnKey="orderTotalPrice" [nzSortFn]="true" nzCustomFilter>
+              TotalPrice
+              <nz-filter-trigger
+                [(nzVisible)]="columnFilter.orderTotalPrice.visible"
+                [nzDropdownMenu]="menuFilterPriceIn"
+              >
+                <i nz-icon nzType="filter"></i>
+              </nz-filter-trigger>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let order of orders"
+            routerLink="/orders/{{ order?.id }}"
+            class="cursor-pointer"
+          >
+            <td>{{ order?.id }}</td>
+            <td>{{ order?.createdAt | date }}</td>
+            <td>{{ order?.orderType }}</td>
+            <td>{{ order?.orderStatus }}</td>
+            <td>{{ order?.orderTotalPrice | number: "1.0-0" }}{{ " đ" }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </section>
+  </section>
+
+  <section>
+    <!--      Menu Filter Order Type  -->
+    <nz-dropdown-menu #menuFilterType="nzDropdownMenu">
+      <div class="ant-table-filter-dropdown w-32">
+        <div class="flex flex-col p-2 space-y-2">
+          <div class="flex flex-col space-y-2">
+            <label
+              class="ml-2"
+              nz-checkbox
+              [(ngModel)]="columnFilter.orderType.orderTypes[0].checked"
+              >{{ columnFilter.orderType.orderTypes[0].value }}</label
+            >
+            <label
+              class="ml-0"
+              nz-checkbox
+              [(ngModel)]="columnFilter.orderType.orderTypes[1].checked"
+              >{{ columnFilter.orderType.orderTypes[1].value }}</label
+            >
+          </div>
+          <div class="flex justify-around">
+            <button
+              nz-button
+              nzSize="small"
+              nzType="primary"
+              (click)="filterColumns()"
+            >
+              Search
+            </button>
+            <button nz-button nzSize="small" (click)="reset()">Reset</button>
+          </div>
+        </div>
+      </div>
+    </nz-dropdown-menu>
+
+    <!--      Menu Filter Order Status  -->
+    <nz-dropdown-menu #menuFilterStatus="nzDropdownMenu">
+      <div class="ant-table-filter-dropdown w-32">
+        <div class="flex flex-col p-2 space-y-2">
+          <div class="flex flex-col space-y-2">
+            <label
+              class="ml-2"
+              nz-checkbox
+              [(ngModel)]="columnFilter.orderStatus.orderStatuses[0].checked"
+              >{{ columnFilter.orderStatus.orderStatuses[0].value }}</label
+            >
+            <label
+              class="ml-0"
+              nz-checkbox
+              [(ngModel)]="columnFilter.orderStatus.orderStatuses[1].checked"
+              >{{ columnFilter.orderStatus.orderStatuses[1].value }}</label
+            >
+          </div>
+          <div class="flex justify-around">
+            <button
+              nz-button
+              nzSize="small"
+              nzType="primary"
+              (click)="filterColumns()"
+            >
+              Search
+            </button>
+            <button nz-button nzSize="small" (click)="reset()">Reset</button>
+          </div>
+        </div>
+      </div>
+    </nz-dropdown-menu>
+
+    <!--  Menu Filter CreatedAt  -->
+    <nz-dropdown-menu #menuFilterCreatedAt="nzDropdownMenu">
+      <div class="ant-table-filter-dropdown">
+        <div class="search-box">
+          <nz-date-picker
+            nzPlaceHolder="Date from"
+            nzSize="small"
+            [(ngModel)]="columnFilter.createdAt.createdAtFrom"
+          ></nz-date-picker>
+
+          <nz-date-picker
+            nzPlaceHolder="Date to"
+            nzSize="small"
+            [(ngModel)]="columnFilter.createdAt.createdAtTo"
+          ></nz-date-picker>
+
+          <button
+            nz-button
+            nzSize="small"
+            nzType="primary"
+            (click)="filterColumns()"
+            class="search-button"
+          >
+            Search
+          </button>
+          <button nz-button nzSize="small" (click)="reset()">Reset</button>
+        </div>
+      </div>
+    </nz-dropdown-menu>
+
+    <!--  Menu Filter Total Price  -->
+    <nz-dropdown-menu #menuFilterPriceIn="nzDropdownMenu">
+      <div class="ant-table-filter-dropdown">
+        <div class="search-box">
+          <input
+            type="number"
+            nz-input
+            placeholder="Total price from"
+            [(ngModel)]="columnFilter.orderTotalPrice.orderTotalPriceFrom"
+            (keydown.enter)="filterColumns()"
+          />
+          <input
+            type="number"
+            nz-input
+            placeholder="Total price to"
+            [(ngModel)]="columnFilter.orderTotalPrice.orderTotalPriceTo"
+            (keydown.enter)="filterColumns()"
+          />
+          <button
+            nz-button
+            nzSize="small"
+            nzType="primary"
+            (click)="filterColumns()"
+            class="search-button"
+          >
+            Search
+          </button>
+          <button nz-button nzSize="small" (click)="reset()">Reset</button>
+        </div>
+      </div>
+    </nz-dropdown-menu>
+  </section>
+</section>

@@ -120,8 +120,8 @@ export class OrderDetailService {
     return this.http.put<OrderDetail>(newUrl, updatedEntity);
   }
 
-  delete(id: number, orderId: number): void {
+  delete(id: number, orderId: number): Observable<Object> {
     const newUrl = `${this.baseUrl}/${orderId}/orderDetails/${id}`;
-    this.http.delete(newUrl);
+    return this.http.delete(newUrl);
   }
 }

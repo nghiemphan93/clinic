@@ -1,1 +1,125 @@
-<p>order-detail-create works!</p>
+<section
+  *ngIf="!orderDetail"
+  class="text-center w-full h-full flex justify-center items-center"
+>
+  <nz-spin nzSize="large" nzSimple></nz-spin>
+</section>
+
+<section *ngIf="orderDetail">
+  <nz-button-group class="flex justify-center mt-28 mb-5">
+    <button
+      class="flex justify-center items-center"
+      nz-button
+      nzType="default"
+      routerLink="/orders/{{ orderId }}/orderDetails"
+    >
+      <i nz-icon nzType="left" nzTheme="outline"></i>
+      Back
+    </button>
+    <button
+      *ngIf="isUpdated"
+      nz-button
+      nzType="primary"
+      routerLink="/orders/{{ orderId }}/orderDetails/{{ orderDetailId }}"
+    >
+      Detail
+    </button>
+    <button
+      *ngIf="isDetailed"
+      nz-button
+      nzType="primary"
+      routerLink="/orders/{{ orderId }}/orderDetails/{{ orderDetailId }}/edit"
+    >
+      Edit
+    </button>
+    <button
+      *ngIf="!isCreated"
+      nz-button
+      nzType="primary"
+      nzDanger
+      nz-popconfirm
+      nzPopconfirmTitle="Still delete!!!"
+      (nzOnConfirm)="delete()"
+      nzPopconfirmPlacement="bottom"
+      [nzLoading]="isLoading"
+      nzShape="round"
+    >
+      Delete
+    </button>
+  </nz-button-group>
+
+  <section class="flex justify-center items-center">
+    <form
+      nz-form
+      [formGroup]="validateForm"
+      (ngSubmit)="submitForm()"
+      class="w-72"
+    >
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Please select product!">
+          <nz-input-group
+            *ngIf="isDetailed"
+            nzPrefixIcon="export"
+            class="mb-1.4"
+          >
+            <nz-form-label nzNoColon>{{
+              orderDetail?.product?.productName
+            }}</nz-form-label>
+          </nz-input-group>
+
+          <nz-select
+            *ngIf="!isDetailed"
+            nzMode="default"
+            nzPlaceHolder="Select product"
+            nzAllowClear
+            nzShowSearch
+            nzServerSearch
+            formControlName="product"
+            (nzOnSearch)="onSearchProducts($event)"
+            [compareWith]="compareFn"
+          >
+            <ng-container *ngFor="let product of products">
+              <nz-option
+                *ngIf="!isLoadingProducts"
+                [nzValue]="product"
+                [nzLabel]="product.productName"
+              ></nz-option>
+            </ng-container>
+            <nz-option *ngIf="isLoadingProducts" nzDisabled nzCustomContent>
+              <i nz-icon nzType="loading" class="loading-icon"></i> Loading
+              Data...
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Please input quantity!">
+          <nz-input-group nzPrefixIcon="euro" class="mb-1.4">
+            <nz-form-label *ngIf="isDetailed" nzNoColon>{{
+              orderDetail?.quantity
+            }}</nz-form-label>
+
+            <input
+              *ngIf="!isDetailed"
+              type="number"
+              nz-input
+              formControlName="quantity"
+              placeholder="Quantity"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+
+      <button
+        *ngIf="isCreated || isUpdated"
+        [nzLoading]="isLoading"
+        nz-button
+        nzBlock
+        [nzType]="'primary'"
+      >
+        Submit
+      </button>
+    </form>
+  </section>
+</section>

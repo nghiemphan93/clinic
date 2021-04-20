@@ -1,5 +1,5 @@
 <section class="container mx-auto max-w-2xl">
-  <h2 class="text-center" nz-typography>Order Details</h2>
+  <h2 class="text-center" nz-typography>Order {{ orderId }} Details</h2>
   <button
     class="flex justify-center items-center mb-3"
     nz-button
@@ -31,6 +31,7 @@
             <th nzColumnKey="createdAt" [nzSortFn]="true">Date</th>
             <th nzColumnKey="product" [nzSortFn]="true">Product</th>
             <th nzColumnKey="quantity" [nzSortFn]="true">Quantity</th>
+            <th nzColumnKey="price" [nzSortFn]="true">Price</th>
             <th nzColumnKey="totalPricePerProduct" [nzSortFn]="true">Total</th>
           </tr>
         </thead>
@@ -44,6 +45,7 @@
             <td>{{ orderDetail?.createdAt | date }}</td>
             <td>{{ orderDetail?.product?.productName }}</td>
             <td>{{ orderDetail?.quantity }}</td>
+            <td>{{ orderDetail?.price | number: "1.0-0" }}{{ " đ" }}</td>
             <td>
               {{ orderDetail?.totalPricePerProduct | number: "1.0-0"
               }}{{ " đ" }}

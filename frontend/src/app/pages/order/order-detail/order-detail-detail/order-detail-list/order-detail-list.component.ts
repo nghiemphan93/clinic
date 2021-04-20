@@ -41,7 +41,6 @@ export class OrderDetailListComponent implements OnInit {
 
   ngOnInit(): void {
     this.orderId = this.activatedRoute.snapshot.params.orderId;
-    this.loadDataFromServer();
   }
 
   ngOnDestroy() {

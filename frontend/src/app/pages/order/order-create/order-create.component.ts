@@ -121,7 +121,6 @@ export class OrderCreateComponent implements OnInit {
       orderType: this.validateForm.get('orderType')?.value,
       orderStatus: this.validateForm.get('orderStatus')?.value,
       orderTotalPrice: this.isCreated ? 0 : this.order.orderTotalPrice,
-      createdAt: this.validateForm.get('productPriceOut')?.value,
     };
 
     try {

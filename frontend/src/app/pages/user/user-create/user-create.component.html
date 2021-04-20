@@ -89,13 +89,13 @@
             nzPlaceHolder="Roles"
             formControlName="roles"
             nzSuffixIcon="control"
+            [compareWith]="compareFn"
           >
             <nz-option
               *ngFor="let role of roles$ | async"
               [nzLabel]="role.role"
               [nzValue]="role"
             >
-              clgt
             </nz-option>
           </nz-select>
         </nz-form-control>

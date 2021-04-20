@@ -13,6 +13,7 @@ import { Observable, Subscription } from 'rxjs';
 import { User } from '../../../models/user/User';
 import { UserService } from '../../../services/user.service';
 import { Role } from '../../../models/user/Role';
+import { BaseEntity } from '../../../models/base/BaseEntity';
 
 @Component({
   selector: 'app-user-create',
@@ -171,4 +172,7 @@ export class UserCreateComponent implements OnInit, OnDestroy {
       this.isLoading = false;
     }
   }
+
+  compareFn = (o1: BaseEntity, o2: BaseEntity) =>
+    o1 && o2 ? o1.id === o2.id : o1 === o2;
 }

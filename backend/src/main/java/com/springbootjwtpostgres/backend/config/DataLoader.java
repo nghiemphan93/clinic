@@ -80,8 +80,8 @@ public class DataLoader implements ApplicationRunner {
 
     private final int MAX_ORDER = 100;
     private final int MAX_ORDERDETAIL = 15;
-    private final int MAX_QUANTITY = 300;
-    private final int MIN_QUANTITY = 30;
+    private final int MAX_QUANTITY = 5;
+    private final int MIN_QUANTITY = 1;
 
     private static final Logger logger = LoggerFactory.getLogger(DataLoader.class);
 
@@ -142,6 +142,11 @@ public class DataLoader implements ApplicationRunner {
             orderDetail.setOrderId(order.getId());
             orderDetail.setProduct(products.get(this.randomInRange(0, products.size() - 1)));
             orderDetail.setProductId(orderDetail.getProduct().getId());
+            orderDetail.setPrice(
+                    order.getOrderType() == OrderType.BUY
+                            ? orderDetail.getProduct().getProductPriceIn()
+                            : orderDetail.getProduct().getProductPriceOut()
+            );
             orderDetail.setCreatedAt(new Date());
             orderDetail.setQuantity(this.randomInRange(this.MIN_QUANTITY, this.MAX_QUANTITY));
             orderDetail.setTotalPricePerProduct(this.orderDetailService.calTotalPricePerProduct(order, orderDetail));

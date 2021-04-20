@@ -3,6 +3,7 @@ package com.springbootjwtpostgres.backend.orderdetail;
 import com.springbootjwtpostgres.backend.basemodels.BasePage;
 import com.springbootjwtpostgres.backend.order.Order;
 import com.springbootjwtpostgres.backend.order.OrderService;
+import com.springbootjwtpostgres.backend.order.OrderType;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -35,6 +36,11 @@ public class OrderDetailService {
         newEntity.setCreatedAt(new Date());
         newEntity.setOrder(order);
         newEntity.setOrderId(order.getId());
+        newEntity.setPrice(
+                order.getOrderType() == OrderType.BUY
+                        ? newEntity.getProduct().getProductPriceIn()
+                        : newEntity.getProduct().getProductPriceOut()
+        );
         return this.repo.save(newEntity);
     }
 
@@ -44,10 +50,22 @@ public class OrderDetailService {
             OrderDetail updatedEntity, Long orderId) throws NotFoundException {
         OrderDetail oldEntity = this.repo.findById(orderDetailId)
                 .orElseThrow(() -> new NotFoundException(OrderDetail.class.getSimpleName() + " not found"));
-        oldEntity.setOrder(updatedEntity.getOrder());
+        Order order = this.orderService.getOne(updatedEntity.getOrderId());
+        order.setOrderTotalPrice(order.getOrderTotalPrice() - oldEntity.getTotalPricePerProduct());
+
+        oldEntity.setOrder(order);
         oldEntity.setProduct(updatedEntity.getProduct());
         oldEntity.setQuantity(updatedEntity.getQuantity());
-        oldEntity.setTotalPricePerProduct(updatedEntity.getTotalPricePerProduct());
+        oldEntity.setPrice(
+                order.getOrderType() == OrderType.BUY
+                        ? oldEntity.getProduct().getProductPriceIn()
+                        : oldEntity.getProduct().getProductPriceOut()
+        );
+        oldEntity.setTotalPricePerProduct(
+                this.calTotalPricePerProduct(
+                        oldEntity.getOrder(), oldEntity
+                )
+        );
 
         oldEntity
                 .getOrder()
@@ -56,7 +74,7 @@ public class OrderDetailService {
                                 .getOrder()
                                 .getOrderTotalPrice() + oldEntity.getTotalPricePerProduct()
                 );
-        this.orderService.update(orderId, oldEntity.getOrder());
+        this.orderService.update(oldEntity.getOrderId(), oldEntity.getOrder());
         return this.repo.save(oldEntity);
     }
 

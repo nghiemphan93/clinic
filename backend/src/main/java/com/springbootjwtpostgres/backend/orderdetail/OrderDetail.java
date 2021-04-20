@@ -20,6 +20,7 @@ public class OrderDetail extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private int quantity;
+    private double price;
     private double totalPricePerProduct;
     private Date createdAt;
 

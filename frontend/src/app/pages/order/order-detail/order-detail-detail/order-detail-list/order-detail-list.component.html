@@ -1,1 +1,56 @@
-<p>order-detail-list works!</p>
+<section class="container mx-auto max-w-2xl">
+  <h2 class="text-center" nz-typography>Order Details</h2>
+  <button
+    class="flex justify-center items-center mb-3"
+    nz-button
+    nzType="primary"
+    routerLink="/orders/{{ orderId }}/orderDetails/create"
+  >
+    <i nz-icon nzType="plus" nzTheme="outline"></i>New
+  </button>
+
+  <section>
+    <section>
+      <nz-table
+        nzShowSizeChanger
+        [nzData]="orderDetails"
+        [nzFrontPagination]="false"
+        [nzLoading]="loading"
+        [nzTotal]="total"
+        [nzPageSize]="pageSize"
+        [nzPageIndex]="pageIndex"
+        (nzQueryParams)="onQueryParamsChange($event)"
+        nzSize="middle"
+        nzPaginationPosition="bottom"
+        nzTableLayout="fixed"
+        [nzWidthConfig]="['60px', '130px', '130px']"
+      >
+        <thead>
+          <tr>
+            <th nzColumnKey="id" [nzSortFn]="true">Id</th>
+            <th nzColumnKey="createdAt" [nzSortFn]="true">Date</th>
+            <th nzColumnKey="product" [nzSortFn]="true">Product</th>
+            <th nzColumnKey="quantity" [nzSortFn]="true">Quantity</th>
+            <th nzColumnKey="totalPricePerProduct" [nzSortFn]="true">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let orderDetail of orderDetails"
+            routerLink="/orders/{{ orderId }}/orderDetails/{{ orderDetail.id }}"
+            class="cursor-pointer"
+          >
+            <td>{{ orderDetail?.id }}</td>
+            <td>{{ orderDetail?.createdAt | date }}</td>
+            <td>{{ orderDetail?.product?.productName }}</td>
+            <td>{{ orderDetail?.quantity }}</td>
+            <td>
+              {{ orderDetail?.totalPricePerProduct | number: "1.0-0"
+              }}{{ " đ" }}
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </section>
+  </section>
+</section>

@@ -19,8 +19,8 @@ const routes: Routes = [
   {
     path: ':orderDetailId',
     loadChildren: () =>
-      import('./order-detail-detail/order-detail-detail.component').then(
-        (m) => m.OrderDetailDetailComponent
+      import('./order-detail-detail/order-detail-detail.module').then(
+        (m) => m.OrderDetailDetailModule
       ),
   },
   {

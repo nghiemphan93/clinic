@@ -1,12 +1,14 @@
 package com.springbootjwtpostgres.backend.order;
 
-import com.springbootjwtpostgres.backend.basemodels.BaseEntity;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
+import net.sf.jasperreports.engine.JRException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.FileNotFoundException;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -52,5 +54,14 @@ public class OrderController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         this.service.delete(id);
+    }
+
+    @GetMapping("/{id}/pdf")
+    public ResponseEntity<byte[]> getOnePdf(@PathVariable Long id) throws NotFoundException, JRException, FileNotFoundException {
+        return ResponseEntity
+                .ok()
+                .header("Content-Type", "application/pdf; charset=UTF-8")
+                .header("Content-Disposition", "inline; filename=\"" + "invoice " + id + ".pdf\"")
+                .body(this.service.getOnePdf(id));
     }
 }

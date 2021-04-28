@@ -1,21 +1,30 @@
 package com.springbootjwtpostgres.backend.order;
 
-import com.springbootjwtpostgres.backend.basemodels.BaseEntity;
 import com.springbootjwtpostgres.backend.basemodels.BasePage;
 import com.springbootjwtpostgres.backend.orderdetail.OrderDetail;
+import com.springbootjwtpostgres.backend.orderdetail.OrderDetailRepo;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+
 
 @Service
 @AllArgsConstructor
 public class OrderService {
     private final OrderRepo repo;
     private final OrderCriteriaRepo criteriaRepo;
+    private final OrderDetailRepo orderDetailRepo;
 
     public Page<Order> getAll(BasePage page, OrderSearchCriteria searchCriteria) {
         return this.criteriaRepo.findAllWithFilters(page, searchCriteria);
@@ -50,5 +59,38 @@ public class OrderService {
                 .stream()
                 .mapToDouble(orderDetail -> orderDetail.getTotalPricePerProduct())
                 .sum();
+    }
+
+    public byte[] getOnePdf(Long orderId) throws FileNotFoundException, JRException {
+        List<OrderDetail> orderDetails = this.orderDetailRepo.findAllByOrderId(orderId);
+        List<Invoice> invoices = this.orderDetails2Invoices(orderDetails);
+
+        File file = ResourceUtils.getFile("classpath:pdfTemplates/Invoice.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
+
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(invoices);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, dataSource);
+        return JasperExportManager.exportReportToPdf(jasperPrint);
+    }
+
+    private List<Invoice> orderDetails2Invoices(List<OrderDetail> orderDetails) {
+        Double orderTotalPrice = this.calOrderTotalPrice(orderDetails);
+        Long rowNumber = 1L;
+        Iterator<OrderDetail> iterator = orderDetails.iterator();
+        List<Invoice> invoices = new ArrayList<>();
+
+        while (iterator.hasNext()) {
+            OrderDetail orderDetail = iterator.next();
+            Invoice invoice = new Invoice();
+            invoice.setRow_number(rowNumber++);
+            invoice.setProduct_name(orderDetail.getProduct().getProductName());
+            invoice.setProduct_code(orderDetail.getProduct().getProductCode());
+            invoice.setQuantity(orderDetail.getQuantity());
+            invoice.setPrice(orderDetail.getPrice());
+            invoice.setTotal_price_per_product(orderDetail.getTotalPricePerProduct());
+            invoice.setOrder_total_price(orderTotalPrice);
+            invoices.add(invoice);
+        }
+        return invoices;
     }
 }

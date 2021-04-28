@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Invoice {
     private Long row_number;
+    private Long order_id;
+    private OrderType order_type;
     private String product_name;
     private String product_code;
     private int quantity;

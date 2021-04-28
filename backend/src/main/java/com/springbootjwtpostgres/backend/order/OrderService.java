@@ -83,6 +83,8 @@ public class OrderService {
             OrderDetail orderDetail = iterator.next();
             Invoice invoice = new Invoice();
             invoice.setRow_number(rowNumber++);
+            invoice.setOrder_id(orderDetail.getOrder().getId());
+            invoice.setOrder_type(orderDetail.getOrder().getOrderType());
             invoice.setProduct_name(orderDetail.getProduct().getProductName());
             invoice.setProduct_code(orderDetail.getProduct().getProductCode());
             invoice.setQuantity(orderDetail.getQuantity());

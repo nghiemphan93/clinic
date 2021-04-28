@@ -67,6 +67,10 @@
 
     <field name="row_number" class="java.lang.Long">
     </field>
+    <field name="order_id" class="java.lang.Long">
+    </field>
+    <field name="order_type" class="java.lang.Enum">
+    </field>
     <field name="product_name" class="java.lang.String">
     </field>
     <field name="product_code" class="java.lang.String">
@@ -186,6 +190,17 @@
                 </textElement>
                 <text><![CDATA[Ship to:]]></text>
             </staticText>
+            <textField textAdjust="StretchHeight" isBlankWhenNull="true">
+                <reportElement style="Detail" positionType="Float" x="200" y="114" width="160" height="47" uuid="50099d62-d13d-4104-a05e-a90191a631f6">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7004ca2c-1d4b-4e89-81e5-3ca95ad57077"/>
+                </reportElement>
+                <textElement>
+                    <font fontName="SansSerif" size="19" isBold="true"/>
+                </textElement>
+                <textFieldExpression>
+                    <![CDATA[$F{order_type}.toString() + ": Order " + $F{order_id}.toString()]]>
+                </textFieldExpression>
+            </textField>
         </band>
     </title>
     <columnHeader>
@@ -197,7 +212,7 @@
                               value="5ee12af0-0273-4d34-950b-e54ce6d1c43a"/>
                 </reportElement>
                 <textElement>
-                    <font fontName="Arial" size="12" isBold="true"/>
+                    <font fontName="Arial" size="14" isBold="true"/>
                 </textElement>
                 <text><![CDATA[No.]]></text>
             </staticText>
@@ -208,7 +223,7 @@
                               value="898aca3a-7f9f-4d37-ae96-99b937c24d69"/>
                 </reportElement>
                 <textElement>
-                    <font fontName="Arial" size="12" isBold="true"/>
+                    <font fontName="Arial" size="14" isBold="true"/>
                 </textElement>
                 <text><![CDATA[Product name]]></text>
             </staticText>
@@ -219,7 +234,7 @@
                               value="7004ca2c-1d4b-4e89-81e5-3ca95ad57077"/>
                 </reportElement>
                 <textElement>
-                    <font fontName="Arial" size="12" isBold="true"/>
+                    <font fontName="Arial" size="14" isBold="true"/>
                 </textElement>
                 <text><![CDATA[Code]]></text>
             </staticText>
@@ -229,8 +244,8 @@
                     <property name="com.jaspersoft.studio.spreadsheet.connectionID"
                               value="0a40302f-9908-49ba-9ce8-42a142d97366"/>
                 </reportElement>
-                <textElement textAlignment="Left">
-                    <font fontName="Arial" size="12" isBold="true"/>
+                <textElement textAlignment="Center">
+                    <font fontName="Arial" size="14" isBold="true"/>
                 </textElement>
                 <text><![CDATA[Quantity]]></text>
             </staticText>
@@ -241,7 +256,7 @@
                               value="049f6253-4419-4d67-be38-92e39cc5adae"/>
                 </reportElement>
                 <textElement textAlignment="Left">
-                    <font fontName="Arial" size="12" isBold="true"/>
+                    <font fontName="Arial" size="14" isBold="true"/>
                 </textElement>
                 <text><![CDATA[Price]]></text>
             </staticText>
@@ -252,9 +267,9 @@
                               value="418bf9b4-4a3a-4641-ad41-d2e673cf9e8a"/>
                 </reportElement>
                 <textElement>
-                    <font fontName="Arial" size="12" isBold="true"/>
+                    <font fontName="Arial" size="14" isBold="true"/>
                 </textElement>
-                <text><![CDATA[Price per product]]></text>
+                <text><![CDATA[Per product]]></text>
             </staticText>
         </band>
     </columnHeader>
@@ -267,7 +282,7 @@
                               value="5ee12af0-0273-4d34-950b-e54ce6d1c43a"/>
                 </reportElement>
                 <textElement>
-                    <font fontName="Arial" size="12" isBold="false"/>
+                    <font fontName="Arial" size="10" isBold="false"/>
                 </textElement>
                 <textFieldExpression><![CDATA[$F{row_number}]]></textFieldExpression>
             </textField>
@@ -278,7 +293,7 @@
                               value="898aca3a-7f9f-4d37-ae96-99b937c24d69"/>
                 </reportElement>
                 <textElement>
-                    <font fontName="Arial" size="12" isBold="false"/>
+                    <font fontName="Arial" size="10" isBold="false"/>
                 </textElement>
                 <textFieldExpression><![CDATA[$F{product_name}]]></textFieldExpression>
             </textField>
@@ -289,7 +304,7 @@
                               value="7004ca2c-1d4b-4e89-81e5-3ca95ad57077"/>
                 </reportElement>
                 <textElement>
-                    <font fontName="Arial" size="12" isBold="false"/>
+                    <font fontName="Arial" size="10" isBold="false"/>
                 </textElement>
                 <textFieldExpression><![CDATA[$F{product_code}]]></textFieldExpression>
             </textField>
@@ -299,8 +314,8 @@
                     <property name="com.jaspersoft.studio.spreadsheet.connectionID"
                               value="0a40302f-9908-49ba-9ce8-42a142d97366"/>
                 </reportElement>
-                <textElement textAlignment="Left">
-                    <font fontName="Arial" size="12" isBold="false"/>
+                <textElement textAlignment="Center">
+                    <font fontName="Arial" size="10" isBold="false"/>
                 </textElement>
                 <textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
             </textField>
@@ -311,7 +326,7 @@
                               value="049f6253-4419-4d67-be38-92e39cc5adae"/>
                 </reportElement>
                 <textElement textAlignment="Left">
-                    <font fontName="Arial" size="12" isBold="false"/>
+                    <font fontName="Arial" size="10" isBold="false"/>
                 </textElement>
                 <textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
             </textField>
@@ -322,7 +337,7 @@
                               value="418bf9b4-4a3a-4641-ad41-d2e673cf9e8a"/>
                 </reportElement>
                 <textElement>
-                    <font fontName="Arial" size="12" isBold="false"/>
+                    <font fontName="Arial" size="10" isBold="false"/>
                 </textElement>
                 <textFieldExpression><![CDATA[$F{total_price_per_product}]]></textFieldExpression>
             </textField>

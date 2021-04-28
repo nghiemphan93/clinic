@@ -14,6 +14,7 @@ import {
   OrderDetailColumnFilter,
 } from '../../../../../models/orderdetail/OrderDetailColumnFilter';
 import { OrderDetailSearchCriteria } from '../../../../../models/orderdetail/OrderDetailSearchCriteria';
+import { OrderService } from '../../../../../services/order.service';
 
 @Component({
   selector: 'app-order-detail-list',
@@ -28,6 +29,7 @@ export class OrderDetailListComponent implements OnInit {
   loading = true;
   orderDetails: OrderDetail[] = [];
   orderId!: number;
+  isLoading = false;
 
   columnFilter: OrderDetailColumnFilter = JSON.parse(
     JSON.stringify(initOrderDetailColumnFilter)
@@ -36,7 +38,8 @@ export class OrderDetailListComponent implements OnInit {
   constructor(
     private orderDetailService: OrderDetailService,
     private messageService: NzMessageService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private orderService: OrderService
   ) {}
 
   ngOnInit(): void {
@@ -121,5 +124,21 @@ export class OrderDetailListComponent implements OnInit {
   filterColumns() {
     this.setAllFiltersMenuInvisible();
     this.loadDataFromServer(new BasePage(), this.getSearchCriteria());
+  }
+
+  async downloadPdf() {
+    this.isLoading = true;
+    try {
+      const result: Blob = await this.orderService
+        .getOnePdf(this.orderId)
+        .toPromise();
+      const fileUrl = URL.createObjectURL(result);
+      window.open(fileUrl);
+      this.messageService.success('order downloaded successfully!!!');
+    } catch (e) {
+      this.messageService.error(e.message);
+    } finally {
+      this.isLoading = false;
+    }
   }
 }

@@ -1,13 +1,42 @@
 <section class="container mx-auto max-w-2xl">
   <h2 class="text-center" nz-typography>Order {{ orderId }} Details</h2>
-  <button
-    class="flex justify-center items-center mb-3"
-    nz-button
-    nzType="primary"
-    routerLink="/orders/{{ orderId }}/orderDetails/create"
-  >
-    <i nz-icon nzType="plus" nzTheme="outline"></i>New
-  </button>
+  <div class="flex justify-between items-center">
+    <nz-button-group>
+      <button
+        class="flex justify-center items-center"
+        nz-button
+        nzType="default"
+        routerLink="/orders"
+      >
+        <i nz-icon nzType="left" nzTheme="outline"></i>
+        Back
+      </button>
+      <button
+        class="flex justify-center items-center"
+        nz-button
+        nzType="primary"
+        routerLink="/orders/{{ orderId }}/orderDetails/create"
+      >
+        <i nz-icon nzType="plus" nzTheme="outline"></i>New
+      </button>
+    </nz-button-group>
+
+    <button
+      [nzLoading]="isLoading"
+      nzSize="large"
+      nz-button
+      nzType="link"
+      (click)="downloadPdf()"
+    >
+      <i
+        class="text-red-400"
+        nz-icon
+        nzType="file-pdf"
+        nzTheme="outline"
+        style="font-size: 30px"
+      ></i>
+    </button>
+  </div>
 
   <section>
     <section>

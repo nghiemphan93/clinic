@@ -1,5 +1,5 @@
 import { Injectable, isDevMode } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { BasePage } from '../models/base/BasePage';
 import { Observable } from 'rxjs';
 import { BaseResponse } from '../models/base/BaseResponse';
@@ -108,5 +108,12 @@ export class OrderService {
   delete(id: number): Observable<Object> {
     const newUrl = `${this.baseUrl}/${id}`;
     return this.http.delete(newUrl);
+  }
+
+  getOnePdf(id: number): Observable<Blob> {
+    const newUrl = `${this.baseUrl}/${id}/pdf`;
+    let headers = new HttpHeaders();
+    headers = headers.set('Accept', 'application/pdf');
+    return this.http.get(newUrl, { headers: headers, responseType: 'blob' });
   }
 }

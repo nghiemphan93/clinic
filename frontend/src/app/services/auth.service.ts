@@ -20,7 +20,7 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class AuthService {
-  baseUrl: string = '';
+  baseUrl: string = 'http://localhost:8080/api/auth';
   isAuth = new BehaviorSubject<boolean>(false);
   userSubject = new BehaviorSubject<User | null>(null);
 

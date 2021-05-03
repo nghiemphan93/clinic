@@ -12,7 +12,7 @@ import { Role } from '../models/user/Role';
   providedIn: 'root',
 })
 export class UserService {
-  baseUrl: string = '';
+  baseUrl: string = 'http://localhost:8080/api/users';
   constructor(private http: HttpClient) {
     if (isDevMode()) {
       this.baseUrl = 'http://localhost:8080/api/users';

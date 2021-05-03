@@ -2,8 +2,8 @@ version: '3.7'
 
 services:
   postgresdb:
-    container_name: postgresdb
     image: postgres:13
+    container_name: postgresdb
     networks:
       - webnet
     restart: always
@@ -26,6 +26,32 @@ services:
       - webnet
     ports:
       - 8081:8080
+
+  frontend:
+    networks:
+      - webnet
+    build:
+      context: ./frontend
+      dockerfile: ./Dockerfile
+    restart: unless-stopped
+    ports:
+      - 80:80
+    depends_on:
+      - postgresdb
+
+  backend:
+    networks:
+      - webnet
+    build:
+      context: ./backend
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgresdb
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresdb:5432/testdb
+
 networks:
   webnet:
 volumes:

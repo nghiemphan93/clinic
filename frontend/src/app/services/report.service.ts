@@ -11,7 +11,7 @@ import { BaseResponse } from '../models/base/BaseResponse';
   providedIn: 'root',
 })
 export class ReportService {
-  baseUrl: string = '';
+  baseUrl: string = 'http://localhost:8080/api/reports';
   constructor(private http: HttpClient) {
     if (isDevMode()) {
       this.baseUrl = 'http://localhost:8080/api/reports';
@@ -24,34 +24,42 @@ export class ReportService {
   ): Observable<BaseResponse<Report>> {
     let params = new HttpParams();
     if (page) {
-      params = params.append(
-        nameof<BasePage>('pageSize'),
-        page.pageSize.toString()
-      );
-      params = params.append(
-        nameof<BasePage>('pageNumber'),
-        page.pageNumber.toString()
-      );
-      params = params.append(nameof<BasePage>('sortBy'), page.sortBy);
-      params = params.append(
-        nameof<BasePage>('sortDirection'),
-        page.sortDirection
-      );
+      params = page.pageSize
+        ? params.append(nameof<BasePage>('pageSize'), page.pageSize.toString())
+        : params;
+      params = page.pageNumber
+        ? params.append(
+            nameof<BasePage>('pageNumber'),
+            page.pageNumber.toString()
+          )
+        : params;
+      params = page.sortBy
+        ? params.append(nameof<BasePage>('sortBy'), page.sortBy)
+        : params;
+      params = page.sortDirection
+        ? params.append(nameof<BasePage>('sortDirection'), page.sortDirection)
+        : params;
     }
 
     if (searchCriteria) {
-      params = params.append(
-        nameof<ReportSearchCriteria>('reportPeriod'),
-        searchCriteria.reportPeriod
-      );
-      params = params.append(
-        nameof<ReportSearchCriteria>('createdAtFrom'),
-        searchCriteria.createdAtFrom.toDateString()
-      );
-      params = params.append(
-        nameof<ReportSearchCriteria>('createdAtTo'),
-        searchCriteria.createdAtTo.toDateString()
-      );
+      params = searchCriteria.reportPeriod
+        ? params.append(
+            nameof<ReportSearchCriteria>('reportPeriod'),
+            searchCriteria.reportPeriod
+          )
+        : params;
+      params = searchCriteria.createdAtFrom
+        ? params.append(
+            nameof<ReportSearchCriteria>('createdAtFrom'),
+            searchCriteria.createdAtFrom.toDateString()
+          )
+        : params;
+      params = searchCriteria.createdAtTo
+        ? params.append(
+            nameof<ReportSearchCriteria>('createdAtTo'),
+            searchCriteria.createdAtTo.toDateString()
+          )
+        : params;
     }
     return this.http.get<BaseResponse<Report>>(this.baseUrl, {
       params: params,
@@ -72,8 +80,8 @@ export class ReportService {
     return this.http.put<Report>(newUrl, updatedEntity);
   }
 
-  delete(id: number): void {
+  delete(id: number): Observable<Object> {
     const newUrl = `${this.baseUrl}/${id}`;
-    this.http.delete(newUrl);
+    return this.http.delete(newUrl);
   }
 }

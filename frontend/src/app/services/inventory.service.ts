@@ -7,7 +7,7 @@ import { Inventory } from '../models/inventory/Inventory';
   providedIn: 'root',
 })
 export class InventoryService {
-  baseUrl: string = '';
+  baseUrl: string = 'http://localhost:8080/api/products';
   constructor(private http: HttpClient) {
     if (isDevMode()) {
       this.baseUrl = 'http://localhost:8080/api/products';

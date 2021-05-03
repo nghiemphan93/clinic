@@ -11,7 +11,7 @@ import { BillSearchCriteria } from '../models/bill/BillSearchCriteria';
   providedIn: 'root',
 })
 export class BillService {
-  baseUrl: string = 'http://localhost:8080/api/bills';
+  baseUrl: string = '/api/bills';
   constructor(private http: HttpClient) {
     if (isDevMode()) {
       this.baseUrl = 'http://localhost:8080/api/bills';

@@ -11,7 +11,7 @@ import { Order } from '../models/order/Order';
   providedIn: 'root',
 })
 export class OrderService {
-  baseUrl: string = 'http://localhost:8080/api/orders';
+  baseUrl: string = '/api/orders';
   constructor(private http: HttpClient) {
     if (isDevMode()) {
       this.baseUrl = 'http://localhost:8080/api/orders';

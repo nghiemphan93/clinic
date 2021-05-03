@@ -11,7 +11,7 @@ import { Product } from '../models/product/Product';
   providedIn: 'root',
 })
 export class ProductService {
-  baseUrl: string = 'http://localhost:8080/api/products';
+  baseUrl: string = '/api/products';
   constructor(private http: HttpClient) {
     if (isDevMode()) {
       this.baseUrl = 'http://localhost:8080/api/products';

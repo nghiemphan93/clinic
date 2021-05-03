@@ -11,7 +11,7 @@ import { BaseResponse } from '../models/base/BaseResponse';
   providedIn: 'root',
 })
 export class ReportService {
-  baseUrl: string = 'http://localhost:8080/api/reports';
+  baseUrl: string = '/api/reports';
   constructor(private http: HttpClient) {
     if (isDevMode()) {
       this.baseUrl = 'http://localhost:8080/api/reports';

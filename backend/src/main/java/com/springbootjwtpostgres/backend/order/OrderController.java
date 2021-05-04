@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -57,7 +58,7 @@ public class OrderController {
     }
 
     @GetMapping("/{id}/pdf")
-    public ResponseEntity<byte[]> getOnePdf(@PathVariable Long id) throws NotFoundException, JRException, FileNotFoundException {
+    public ResponseEntity<byte[]> getOnePdf(@PathVariable Long id) throws NotFoundException, JRException, IOException {
         return ResponseEntity
                 .ok()
                 .header("Content-Type", "application/pdf; charset=UTF-8")

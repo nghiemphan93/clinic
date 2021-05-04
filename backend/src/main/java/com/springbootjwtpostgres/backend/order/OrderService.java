@@ -7,12 +7,12 @@ import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -61,12 +61,13 @@ public class OrderService {
                 .sum();
     }
 
-    public byte[] getOnePdf(Long orderId) throws FileNotFoundException, JRException {
+    public byte[] getOnePdf(Long orderId) throws IOException, JRException {
         List<OrderDetail> orderDetails = this.orderDetailRepo.findAllByOrderId(orderId);
         List<Invoice> invoices = this.orderDetails2Invoices(orderDetails);
 
-        File file = ResourceUtils.getFile("classpath:pdfTemplates/Invoice.jrxml");
-        JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
+//        File file = ResourceUtils.getFile("classpath:pdfTemplates/Invoice.jrxml");
+        InputStream file = new ClassPathResource("classpath:pdfTemplates/Invoice.jrxml").getInputStream();
+        JasperReport jasperReport = JasperCompileManager.compileReport(file);
 
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(invoices);
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, dataSource);

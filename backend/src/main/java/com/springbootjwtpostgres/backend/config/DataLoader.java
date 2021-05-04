@@ -22,10 +22,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -171,7 +174,8 @@ public class DataLoader implements ApplicationRunner {
         try {
             if (this.productRepo.findAll().isEmpty()) {
                 ObjectMapper objectMapper = new ObjectMapper();
-                File file = new File("backend/src/main/resources/data/products.json");
+//                File file = new File("backend/src/main/resources/data/products.json");
+                InputStream file = new ClassPathResource("classpath:data/products.json").getInputStream();
                 List<Product> products = Arrays.asList(objectMapper.readValue(file, Product[].class));
 
                 products = products.stream().map(product -> {

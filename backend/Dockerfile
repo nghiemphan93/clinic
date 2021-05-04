@@ -5,7 +5,7 @@ COPY pom.xml /home/app
 RUN mvn -f /home/app/pom.xml clean package -DskipTests
 
 # Package stage #
-FROM openjdk:11-jre-slim
+FROM openjdk:11-jre
 COPY --from=build /home/app/target/backend-0.0.1-SNAPSHOT.jar /usr/local/lib/backend.jar
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","/usr/local/lib/backend.jar"]

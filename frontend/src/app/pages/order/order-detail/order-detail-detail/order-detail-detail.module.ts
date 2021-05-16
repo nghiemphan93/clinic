@@ -19,6 +19,11 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NgZorroAntdMobileModule } from 'ng-zorro-antd-mobile';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
+import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
+import { SharedModule } from '../../../../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -44,6 +49,11 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
     NzSpinModule,
     NzDatePickerModule,
     NzCheckboxModule,
+    NgZorroAntdMobileModule,
+    NzCardModule,
+    NzSkeletonModule,
+    NzDescriptionsModule,
+    SharedModule,
   ],
 })
 export class OrderDetailDetailModule {}

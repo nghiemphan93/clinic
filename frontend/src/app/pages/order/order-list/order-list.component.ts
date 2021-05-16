@@ -12,7 +12,6 @@ import {
   OrderColumnFilter,
 } from '../../../models/order/OrderColumnFilter';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { SpinnerService } from '../../../services/spinner.service';
 
 @Component({
   selector: 'app-order-list',
@@ -38,8 +37,7 @@ export class OrderListComponent implements OnInit {
   constructor(
     private orderService: OrderService,
     private messageService: NzMessageService,
-    private deviceService: DeviceDetectorService,
-    private spinnerService: SpinnerService
+    private deviceService: DeviceDetectorService
   ) {
     this.isMobile = this.deviceService.isMobile();
   }

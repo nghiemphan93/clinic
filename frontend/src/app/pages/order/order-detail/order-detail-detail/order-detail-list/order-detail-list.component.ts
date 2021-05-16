@@ -15,6 +15,7 @@ import {
 } from '../../../../../models/orderdetail/OrderDetailColumnFilter';
 import { OrderDetailSearchCriteria } from '../../../../../models/orderdetail/OrderDetailSearchCriteria';
 import { OrderService } from '../../../../../services/order.service';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-order-detail-list',
@@ -30,6 +31,9 @@ export class OrderDetailListComponent implements OnInit {
   orderDetails: OrderDetail[] = [];
   orderId!: number;
   isLoading = false;
+  currentPage = 1;
+  totalPages!: number;
+  isMobile!: boolean;
 
   columnFilter: OrderDetailColumnFilter = JSON.parse(
     JSON.stringify(initOrderDetailColumnFilter)
@@ -39,11 +43,15 @@ export class OrderDetailListComponent implements OnInit {
     private orderDetailService: OrderDetailService,
     private messageService: NzMessageService,
     private activatedRoute: ActivatedRoute,
-    private orderService: OrderService
-  ) {}
+    private orderService: OrderService,
+    private deviceService: DeviceDetectorService
+  ) {
+    this.isMobile = this.deviceService.isMobile();
+  }
 
   ngOnInit(): void {
     this.orderId = this.activatedRoute.snapshot.params.orderId;
+    this.loadDataFromServer();
   }
 
   ngOnDestroy() {
@@ -62,6 +70,8 @@ export class OrderDetailListComponent implements OnInit {
             this.total = data.totalElements;
             this.orderDetails = data.content;
             this.loading = false;
+            this.totalPages = data.totalPages;
+            this.currentPage = this.currentPage;
           },
           (e) => {
             this.messageService.error(e.message);
@@ -97,10 +107,10 @@ export class OrderDetailListComponent implements OnInit {
       createdAtTo: this.columnFilter.createdAt.createdAtTo,
       quantityFrom: this.columnFilter.quantity.quantityFrom,
       quantityTo: this.columnFilter.quantity.quantityTo,
-      totalPricePerProductFrom: this.columnFilter.totalPricePerProduct
-        .totalPricePerProductFrom,
-      totalPricePerProductTo: this.columnFilter.totalPricePerProduct
-        .totalPricePerProductTo,
+      totalPricePerProductFrom:
+        this.columnFilter.totalPricePerProduct.totalPricePerProductFrom,
+      totalPricePerProductTo:
+        this.columnFilter.totalPricePerProduct.totalPricePerProductTo,
     };
     return searchCriteria;
   }
@@ -140,5 +150,34 @@ export class OrderDetailListComponent implements OnInit {
     } finally {
       this.isLoading = false;
     }
+  }
+
+  async delete(id: number | undefined) {
+    if (id) {
+      try {
+        this.isLoading = true;
+        await this.orderDetailService.delete(id, this.orderId).toPromise();
+        this.messageService.success('deleted!!!');
+        this.orderDetails = [
+          ...this.orderDetails.filter((orderDetail) => orderDetail.id !== id),
+        ];
+      } catch (e) {
+        this.messageService.error(e.message);
+      } finally {
+        this.isLoading = false;
+      }
+    }
+  }
+
+  stopPropagation($event: MouseEvent) {
+    $event.stopPropagation();
+  }
+
+  onChosenPage(currentPage: number) {
+    const page: BasePage = {
+      pageNumber: currentPage - 1,
+      pageSize: this.pageSize,
+    };
+    this.loadDataFromServer(page);
   }
 }

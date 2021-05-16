@@ -1,4 +1,4 @@
-<section class="container mx-auto max-w-2xl">
+<section *ngIf="!isMobile" class="container mx-auto max-w-2xl">
   <h2 class="text-center" nz-typography>Order {{ orderId }} Details</h2>
   <div class="flex justify-between items-center">
     <nz-button-group>
@@ -84,4 +84,135 @@
       </nz-table>
     </section>
   </section>
+</section>
+
+<section *ngIf="isMobile">
+  <h2 class="text-center" nz-typography>Order {{ orderId }} Details</h2>
+  <div class="flex justify-between items-center mb-4">
+    <nz-button-group>
+      <button
+        class="flex justify-center items-center"
+        nz-button
+        nzType="default"
+        routerLink="/orders"
+      >
+        <i nz-icon nzType="left" nzTheme="outline"></i>
+        Back
+      </button>
+      <button
+        class="flex justify-center"
+        nz-button
+        nzType="primary"
+        routerLink="/orders/{{ orderId }}/orderDetails/create"
+      >
+        <i nz-icon nzType="plus" nzTheme="outline"></i>New
+      </button>
+    </nz-button-group>
+
+    <button
+      [nzLoading]="isLoading"
+      nzSize="default"
+      nz-button
+      nzType="link"
+      (click)="downloadPdf()"
+      class="flex justify-center items-center"
+    >
+      <i
+        class="text-red-400 text-3xl mb-1"
+        nz-icon
+        nzType="file-pdf"
+        nzTheme="outline"
+      ></i>
+    </button>
+  </div>
+
+  <ng-container *ngFor="let orderDetail of orderDetails">
+    <nz-card
+      class="mb-2 z-10"
+      nzSize="small"
+      [nzTitle]="'Order Detail ' + orderDetail?.id"
+      [nzActions]="[editAction, deleteAction]"
+      [nzHoverable]="true"
+      routerLink="/orders/{{ orderId }}/orderDetails/{{ orderDetail.id }}"
+    >
+      <nz-descriptions nzSize="small">
+        <nz-descriptions-item nzTitle="Date">{{
+          orderDetail?.createdAt | date
+        }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Product Name">{{
+          orderDetail?.product?.productName
+        }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Quantity">{{
+          orderDetail?.quantity
+        }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Total Price Per Product"
+          >{{ orderDetail?.totalPricePerProduct | number: "1.0-0"
+          }}{{ " đ" }}</nz-descriptions-item
+        >
+      </nz-descriptions>
+
+      <ng-template #editAction>
+        <i
+          nz-icon
+          nzType="edit"
+          (click)="stopPropagation($event)"
+          routerLink="/orders/{{ orderId }}/orderDetails/{{
+            orderDetail?.id
+          }}/edit"
+        ></i>
+      </ng-template>
+      <ng-template #deleteAction>
+        <i
+          (click)="stopPropagation($event)"
+          nz-popconfirm
+          nzPopconfirmTitle="Still delete!!!"
+          (nzOnConfirm)="delete(orderDetail?.id)"
+          nzPopconfirmPlacement="top"
+          nz-icon
+          nzType="delete"
+          nzTheme="outline"
+        >
+        </i>
+      </ng-template>
+    </nz-card>
+  </ng-container>
+
+  <section *ngIf="loading">
+    <nz-skeleton
+      [nzActive]="true"
+      [nzLoading]="loading"
+      [nzAvatar]="{ size: 'large' }"
+    >
+    </nz-skeleton>
+    <nz-skeleton
+      [nzActive]="true"
+      [nzLoading]="loading"
+      [nzAvatar]="{ size: 'large' }"
+    >
+    </nz-skeleton>
+    <nz-skeleton
+      [nzActive]="true"
+      [nzLoading]="loading"
+      [nzAvatar]="{ size: 'large' }"
+    >
+    </nz-skeleton>
+    <nz-skeleton
+      [nzActive]="true"
+      [nzLoading]="loading"
+      [nzAvatar]="{ size: 'large' }"
+    >
+    </nz-skeleton>
+  </section>
+
+  <Pagination
+    class=""
+    [total]="totalPages"
+    [current]="currentPage"
+    [locale]="{
+      prevText: 'Prev',
+      nextText: 'Next'
+    }"
+    (onChange)="onChosenPage($event)"
+  >
+  </Pagination>
 </section>

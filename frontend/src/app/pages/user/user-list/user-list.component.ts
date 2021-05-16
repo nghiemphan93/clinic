@@ -12,6 +12,8 @@ import { BasePage } from '../../../models/base/BasePage';
 import { UserSearchCriteria } from '../../../models/user/UserSearchCriteria';
 import { SortEDirection } from '../../../models/base/SortEDirection';
 import { Subscription } from 'rxjs';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-user-list',
@@ -30,10 +32,22 @@ export class UserListComponent implements OnInit, OnDestroy {
   @ViewChild('searchInput') searchInput:
     | ElementRef<HTMLInputElement>
     | undefined;
+  currentPage = 1;
+  totalPages!: number;
+  isMobile!: boolean;
+  isLoading = false;
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private messageService: NzMessageService,
+    private deviceService: DeviceDetectorService
+  ) {
+    this.isMobile = this.deviceService.isMobile();
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadDataFromServer();
+  }
 
   ngOnDestroy() {
     if (this.subscription) {
@@ -48,6 +62,8 @@ export class UserListComponent implements OnInit, OnDestroy {
         this.loading = false;
         this.total = data.totalElements;
         this.users = data.content;
+        this.totalPages = data.totalPages;
+        this.currentPage = this.currentPage;
       })
     );
   }
@@ -92,5 +108,32 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   focusOnSearchInput() {
     this.searchInput?.nativeElement.focus();
+  }
+
+  async delete(id: number | undefined) {
+    if (id) {
+      try {
+        this.isLoading = true;
+        await this.userService.delete(id).toPromise();
+        this.messageService.success('deleted!!!');
+        this.users = [...this.users.filter((user) => user.id !== id)];
+      } catch (e) {
+        this.messageService.error(e.message);
+      } finally {
+        this.isLoading = false;
+      }
+    }
+  }
+
+  stopPropagation($event: MouseEvent) {
+    $event.stopPropagation();
+  }
+
+  onChosenPage(currentPage: number) {
+    const page: BasePage = {
+      pageNumber: currentPage - 1,
+      pageSize: this.pageSize,
+    };
+    this.loadDataFromServer(page);
   }
 }

@@ -1,12 +1,5 @@
-<section
-  *ngIf="!user"
-  class="text-center w-full h-full flex justify-center items-center"
->
-  <nz-spin nzSize="large" nzSimple></nz-spin>
-</section>
-
 <section *ngIf="user && (roles$ | async)">
-  <nz-button-group class="flex justify-center mt-28 mb-5">
+  <nz-button-group class="flex justify-center pt-28 pb-5">
     <button
       class="flex justify-center items-center"
       nz-button

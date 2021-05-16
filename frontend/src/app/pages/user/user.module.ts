@@ -17,6 +17,11 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NgZorroAntdMobileModule } from 'ng-zorro-antd-mobile';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
+import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -40,6 +45,11 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
     NzSelectModule,
     NzPopconfirmModule,
     NzSpinModule,
+    NgZorroAntdMobileModule,
+    NzCardModule,
+    NzSkeletonModule,
+    NzDescriptionsModule,
+    SharedModule,
   ],
 })
 export class UserModule {}

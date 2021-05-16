@@ -11,6 +11,8 @@ import {
   initColumnFilter,
   OrderColumnFilter,
 } from '../../../models/order/OrderColumnFilter';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { SpinnerService } from '../../../services/spinner.service';
 
 @Component({
   selector: 'app-order-list',
@@ -24,6 +26,10 @@ export class OrderListComponent implements OnInit {
   pageIndex = 1;
   loading = true;
   orders: Order[] = [];
+  isMobile!: boolean;
+  isLoading = false;
+  currentPage = 1;
+  totalPages!: number;
 
   columnFilter: OrderColumnFilter = JSON.parse(
     JSON.stringify(initColumnFilter)
@@ -31,10 +37,16 @@ export class OrderListComponent implements OnInit {
 
   constructor(
     private orderService: OrderService,
-    private messageService: NzMessageService
-  ) {}
+    private messageService: NzMessageService,
+    private deviceService: DeviceDetectorService,
+    private spinnerService: SpinnerService
+  ) {
+    this.isMobile = this.deviceService.isMobile();
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadDataFromServer();
+  }
 
   ngOnDestroy() {
     if (this.subscription) {
@@ -50,6 +62,8 @@ export class OrderListComponent implements OnInit {
           this.total = data.totalElements;
           this.orders = data.content;
           this.loading = false;
+          this.totalPages = data.totalPages;
+          this.currentPage = this.currentPage;
         },
         (e) => {
           this.messageService.error(e.message);
@@ -85,8 +99,8 @@ export class OrderListComponent implements OnInit {
       orderStatuses: this.columnFilter.orderStatus.orderStatuses
         .filter((orderStatus) => orderStatus.checked === true)
         .map((orderStatus) => orderStatus.value),
-      orderTotalPriceFrom: this.columnFilter.orderTotalPrice
-        .orderTotalPriceFrom,
+      orderTotalPriceFrom:
+        this.columnFilter.orderTotalPrice.orderTotalPriceFrom,
       orderTotalPriceTo: this.columnFilter.orderTotalPrice.orderTotalPriceTo,
       createdAtFrom: this.columnFilter.createdAt.createdAtFrom,
       createdAtTo: this.columnFilter.createdAt.createdAtTo,
@@ -113,5 +127,46 @@ export class OrderListComponent implements OnInit {
   filterColumns() {
     this.setAllFiltersMenuInvisible();
     this.loadDataFromServer(new BasePage(), this.getSearchCriteria());
+  }
+
+  async downloadPdf($event: MouseEvent, orderId: number | undefined) {
+    $event.stopPropagation();
+    try {
+      const result: Blob = await this.orderService
+        .getOnePdf(orderId!)
+        .toPromise();
+      const fileUrl = URL.createObjectURL(result);
+      window.open(fileUrl);
+      this.messageService.success('order downloaded successfully!!!');
+    } catch (e) {
+      this.messageService.error(e.message);
+    }
+  }
+
+  async delete(id: number | undefined) {
+    if (id) {
+      try {
+        this.isLoading = true;
+        await this.orderService.delete(id).toPromise();
+        this.messageService.success('deleted!!!');
+        this.orders = [...this.orders.filter((order) => order.id !== id)];
+      } catch (e) {
+        this.messageService.error(e.message);
+      } finally {
+        this.isLoading = false;
+      }
+    }
+  }
+
+  stopPropagation($event: MouseEvent) {
+    $event.stopPropagation();
+  }
+
+  onChosenPage(currentPage: number) {
+    const page: BasePage = {
+      pageNumber: currentPage - 1,
+      pageSize: this.pageSize,
+    };
+    this.loadDataFromServer(page);
   }
 }

@@ -2,7 +2,7 @@
 FROM node:15-alpine3.13 AS build
 WORKDIR /usr/src/app
 COPY package*.json ./
-RUN npm install -g @angular/cli && npm install
+RUN npm install -g @angular/cli@11.2.3 && npm install
 COPY . .
 RUN ng build --prod
 

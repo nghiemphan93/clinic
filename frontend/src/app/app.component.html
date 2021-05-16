@@ -28,10 +28,11 @@
       [nzInlineCollapsed]="isCollapsed"
     >
       <li
-        *ngIf="isAuth$ | async"
         nz-submenu
         nzTitle="Dashboard"
         nzIcon="dashboard"
+        nzOpen
+        [hidden]="!(isAuth$ | async)"
       >
         <ul>
           <li nz-menu-item nzMatchRouter>

@@ -8,6 +8,7 @@ import { ProductSearchCriteria } from '../../../models/product/ProductSearchCrit
 import { Product } from '../../../models/product/Product';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { ProductColumnFilter } from '../../../models/product/ProductColumnFilter';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-product-list',
@@ -22,6 +23,10 @@ export class ProductListComponent implements OnInit {
   loading = true;
   products: Product[] = [];
   searchValue = '';
+  currentPage = 1;
+  totalPages!: number;
+  isLoading = false;
+  isMobile!: boolean;
 
   columnFilter: ProductColumnFilter = {
     productName: {
@@ -40,10 +45,15 @@ export class ProductListComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private messageService: NzMessageService
-  ) {}
+    private messageService: NzMessageService,
+    private deviceService: DeviceDetectorService
+  ) {
+    this.isMobile = this.deviceService.isMobile();
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadDataFromServer();
+  }
 
   ngOnDestroy() {
     if (this.subscription) {
@@ -62,6 +72,8 @@ export class ProductListComponent implements OnInit {
           this.total = data.totalElements;
           this.products = data.content;
           this.loading = false;
+          this.totalPages = data.totalPages;
+          this.currentPage = this.currentPage;
         },
         (e) => {
           this.messageService.error(e.message);
@@ -96,8 +108,8 @@ export class ProductListComponent implements OnInit {
       productCode: this.columnFilter.productName.productName,
       productPriceInFrom: this.columnFilter.productPriceIn.productPriceInFrom,
       productPriceInTo: this.columnFilter.productPriceIn.productPriceInTo,
-      productPriceOutFrom: this.columnFilter.productPriceOut
-        .productPriceOutFrom,
+      productPriceOutFrom:
+        this.columnFilter.productPriceOut.productPriceOutFrom,
       productPriceOutTo: this.columnFilter.productPriceOut.productPriceOutTo,
     };
     return searchCriteria;
@@ -127,5 +139,34 @@ export class ProductListComponent implements OnInit {
   filterColumns() {
     this.setAllFiltersMenuInvisible();
     this.loadDataFromServer(new BasePage(), this.getSearchCriteria());
+  }
+
+  async delete(id: number | undefined) {
+    if (id) {
+      try {
+        this.isLoading = true;
+        await this.productService.delete(id).toPromise();
+        this.messageService.success('deleted!!!');
+        this.products = [
+          ...this.products.filter((product: Product) => product.id !== id),
+        ];
+      } catch (e) {
+        this.messageService.error(e.message);
+      } finally {
+        this.isLoading = false;
+      }
+    }
+  }
+
+  stopPropagation($event: MouseEvent) {
+    $event.stopPropagation();
+  }
+
+  onChosenPage(currentPage: number) {
+    const page: BasePage = {
+      pageNumber: currentPage - 1,
+      pageSize: this.pageSize,
+    };
+    this.loadDataFromServer(page);
   }
 }

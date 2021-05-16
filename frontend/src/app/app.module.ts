@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { en_US, NZ_I18N, vi_VN } from 'ng-zorro-antd/i18n';
+import { en_US, NZ_I18N } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import vi from '@angular/common/locales/vi';
 import { FormsModule } from '@angular/forms';
@@ -16,6 +16,8 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { NZ_CONFIG, NzConfig } from 'ng-zorro-antd/core/config';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
+import { NgZorroAntdMobileModule } from 'ng-zorro-antd-mobile';
+import { SpinnerInterceptor } from './interceptors/spinner.interceptor';
 
 registerLocaleData(vi);
 
@@ -36,10 +38,12 @@ const ngZorroConfig: NzConfig = {
     NzMenuModule,
     HttpClientModule,
     NzMessageModule,
+    NgZorroAntdMobileModule,
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: SpinnerInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: NZ_CONFIG, useValue: ngZorroConfig },
   ],

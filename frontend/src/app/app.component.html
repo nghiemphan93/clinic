@@ -4,13 +4,21 @@
     nzCollapsible
     nzWidth="256px"
     nzBreakpoint="md"
+    nzTheme="dark"
     [(nzCollapsed)]="isCollapsed"
     [nzTrigger]="null"
+    [nzCollapsedWidth]="isMobile ? 0 : 100"
   >
     <div class="sidebar-logo">
-      <a href="https://ng.ant.design/" target="_blank">
-        <img src="https://ng.ant.design/assets/img/logo.svg" alt="logo" />
-        <h1>Clinic</h1>
+      <a href="#">
+        <i
+          class="text-purple-200"
+          nz-icon
+          nzType="medicine-box"
+          nzTheme="outline"
+          style="font-size: 25px"
+        ></i>
+        <h1 class="text-purple-200">Clinic</h1>
       </a>
     </div>
     <ul
@@ -28,29 +36,47 @@
       >
         <ul>
           <li nz-menu-item nzMatchRouter>
-            <a routerLink="/welcome">Welcome</a>
+            <a routerLink="/welcome" (click)="isMobile ? collapseMenu() : null"
+              >Welcome</a
+            >
           </li>
           <li nz-menu-item nzMatchRouter>
-            <a routerLink="/products">Product</a>
+            <a routerLink="/products" (click)="isMobile ? collapseMenu() : null"
+              >Product</a
+            >
           </li>
           <li nz-menu-item nzMatchRouter>
-            <a routerLink="/orders">Order</a>
+            <a routerLink="/orders" (click)="isMobile ? collapseMenu() : null"
+              >Order</a
+            >
           </li>
           <li nz-menu-item nzMatchRouter>
-            <a routerLink="/reports">Report</a>
+            <a routerLink="/reports" (click)="isMobile ? collapseMenu() : null"
+              >Report</a
+            >
           </li>
         </ul>
       </li>
       <li nz-submenu nzOpen nzTitle="Auth" nzIcon="user">
         <ul>
           <li *ngIf="isAuth$ | async" nz-menu-item nzMatchRouter>
-            <a routerLink="/users">Users</a>
+            <a routerLink="/users" (click)="isMobile ? collapseMenu() : null"
+              >Users</a
+            >
           </li>
           <li *ngIf="(isAuth$ | async) === false" nz-menu-item nzMatchRouter>
-            <a routerLink="/auth/signin">Sign In</a>
+            <a
+              routerLink="/auth/signin"
+              (click)="isMobile ? collapseMenu() : null"
+              >Sign In</a
+            >
           </li>
           <li *ngIf="(isAuth$ | async) === false" nz-menu-item nzMatchRouter>
-            <a routerLink="/auth/signup">Sign Up</a>
+            <a
+              routerLink="/auth/signup"
+              (click)="isMobile ? collapseMenu() : null"
+              >Sign Up</a
+            >
           </li>
           <li
             *ngIf="isAuth$ | async"
@@ -77,7 +103,7 @@
       </div>
     </nz-header>
     <nz-content>
-      <div class="inner-content">
+      <div class="inner-content" (click)="isMobile ? collapseMenu() : null">
         <router-outlet></router-outlet>
       </div>
     </nz-content>

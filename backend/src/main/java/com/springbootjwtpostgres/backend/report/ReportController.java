@@ -35,7 +35,7 @@ public class ReportController {
     public ResponseEntity<BaseEntity> create(@RequestBody Report newEntity) {
         return new ResponseEntity<>(
                 this.service.create(newEntity),
-                HttpStatus.OK
+                HttpStatus.CREATED
         );
     }
 
@@ -50,7 +50,8 @@ public class ReportController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
         this.service.delete(id);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 }

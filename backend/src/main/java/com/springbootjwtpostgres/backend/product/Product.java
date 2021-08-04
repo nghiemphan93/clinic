@@ -2,6 +2,7 @@ package com.springbootjwtpostgres.backend.product;
 
 import com.springbootjwtpostgres.backend.basemodels.BaseEntity;
 import com.springbootjwtpostgres.backend.inventory.Inventory;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;

@@ -6,6 +6,7 @@ import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,7 +38,7 @@ public class ProductController {
     public ResponseEntity<BaseEntity> create(@RequestBody Product newEntity) {
         return new ResponseEntity<>(
                 this.service.create(newEntity),
-                HttpStatus.OK
+                HttpStatus.CREATED
         );
     }
 
@@ -52,7 +53,10 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
         this.service.delete(id);
+        return new ResponseEntity<HttpStatus>(
+                HttpStatus.ACCEPTED
+        );
     }
 }

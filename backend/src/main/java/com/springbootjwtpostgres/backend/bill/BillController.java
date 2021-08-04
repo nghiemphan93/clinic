@@ -37,7 +37,7 @@ public class BillController {
     public ResponseEntity<BaseEntity> create(@RequestBody Bill newEntity) {
         return new ResponseEntity<>(
                 this.service.create(newEntity),
-                HttpStatus.OK
+                HttpStatus.CREATED
         );
     }
 
@@ -52,7 +52,8 @@ public class BillController {
     }
 
     @DeleteMapping("/{billId}")
-    public void delete(@PathVariable Long billId) {
+    public ResponseEntity<HttpStatus> delete(@PathVariable Long billId) {
         this.service.delete(billId);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 }

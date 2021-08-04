@@ -59,9 +59,10 @@ public class OrderDetailController {
     }
 
     @DeleteMapping("/{orderDetailId}")
-    public void delete(
+    public ResponseEntity<HttpStatus> delete(
             @PathVariable Long orderId,
             @PathVariable Long orderDetailId) throws NotFoundException {
         this.service.delete(orderDetailId, orderId);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 }

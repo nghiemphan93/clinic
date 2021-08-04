@@ -5,7 +5,7 @@ import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
+import org.springframework.http.client.support.HttpAccessor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -28,7 +28,7 @@ public class InventoryController {
                                              @PathVariable Long productId) throws NotFoundException {
         return new ResponseEntity<>(
                 this.service.create(newEntity, productId),
-                HttpStatus.OK
+                HttpStatus.CREATED
         );
     }
 
@@ -44,7 +44,8 @@ public class InventoryController {
     }
 
     @DeleteMapping("/{inventoryId}")
-    public void delete(@PathVariable Long productId, @PathVariable Long inventoryId) throws NotFoundException {
+    public ResponseEntity<HttpStatus> delete(@PathVariable Long productId, @PathVariable Long inventoryId) throws NotFoundException {
         this.service.delete(productId, inventoryId);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 }

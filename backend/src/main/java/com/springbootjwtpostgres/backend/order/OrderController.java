@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 @RestController
@@ -38,7 +37,7 @@ public class OrderController {
     public ResponseEntity<Order> create(@RequestBody Order newEntity) {
         return new ResponseEntity<>(
                 this.service.create(newEntity),
-                HttpStatus.OK
+                HttpStatus.CREATED
         );
     }
 
@@ -53,15 +52,16 @@ public class OrderController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
         this.service.delete(id);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/{id}/pdf")
     public ResponseEntity<byte[]> getOnePdf(@PathVariable Long id) throws NotFoundException, JRException, IOException {
         return ResponseEntity
                 .ok()
-                .header("Content-Type", "application/pdf; charset=UTF-8")
+                .header("Content-Type", "application/pdf")
                 .header("Content-Disposition", "inline; filename=\"" + "invoice " + id + ".pdf\"")
                 .body(this.service.getOnePdf(id));
     }

@@ -91,8 +91,19 @@ public class DataLoader implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         this.createRoles();
-        this.createProducts();
-        this.createOrders();
+        if (!DataLoader.isJUnitTest()) {
+            this.createProducts();
+            this.createOrders();
+        }
+    }
+
+    public static boolean isJUnitTest() {
+        for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
+            if (element.getClassName().startsWith("org.junit.")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void createOrders() throws NotFoundException {
